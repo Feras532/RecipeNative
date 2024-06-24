@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import RecipeCard, { Recipe } from '@/components/RecipeCard';
 import { ThemedView } from '@/components/ThemedView';
+import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
 
 // Dummy data
@@ -17,18 +18,44 @@ const categories = [
   { emoji: '⚡', label: 'Fast' },
 ];
 
+const recipes = [
+  burgerRecipe,
+  noodlesRecipe,
+  saladRecipe,
+  tacoRecipe,
+  burgerRecipe,
+  tacoRecipe,
+  burgerRecipe,
+  burgerRecipe,
+  saladRecipe,
+  burgerRecipe,
+  burgerRecipe,
+];
+
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
 
   const handleCategoryPress = (label: string) => {
     setSelectedCategory(label);
   };
 
+  const handleRecipePress = (recipe: Recipe) => {
+    setSelectedRecipe(recipe);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedRecipe(null);
+  };
+
   return (
-    <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
+    <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#2b2b2b' }}>
       <ThemedText style={styles.welcomeText}>Welcome Feras 👋</ThemedText>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
-        {categories.map((category, index) => (
+        {categories && categories.map((category, index) => (
           <TouchableOpacity
             key={index}
             style={styles.categoryButton}
@@ -47,20 +74,13 @@ const HomeScreen: React.FC = () => {
       <View>
         <ThemedText style={styles.sectionTitle}>Popular Recipes</ThemedText>
         <ThemedView style={styles.recipesSection}>
-          <RecipeCard recipe={burgerRecipe} />
-          <RecipeCard recipe={noodlesRecipe} />
-          <RecipeCard recipe={saladRecipe} />
-          <RecipeCard recipe={tacoRecipe} />
-          <RecipeCard recipe={burgerRecipe} />
-          <RecipeCard recipe={tacoRecipe} />
-          <RecipeCard recipe={burgerRecipe} />
-          <RecipeCard recipe={burgerRecipe} />
-          <RecipeCard recipe={saladRecipe} />
-          <RecipeCard recipe={burgerRecipe} />
-          <RecipeCard recipe={burgerRecipe} />
-          {/* Add more components */}
+          {recipes && recipes.map((recipe, index) => (
+            <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
+          ))}
         </ThemedView>
       </View>
+
+      <RecipeDetailsModal visible={modalVisible} recipe={selectedRecipe} onClose={closeModal} />
     </ParallaxScrollView>
   );
 };
@@ -93,6 +113,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     borderWidth: 1,
+    borderColor: '#525252',
     backgroundColor: '#ffffff', // Default background color
   },
   selectedCategoryInner: {
