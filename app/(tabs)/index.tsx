@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
-import RecipeCard, { Recipe } from '@/components/RecipeCard';
+import RecipeCard from '@/components/RecipeCard';
+import { Recipe } from '@/components/dummyRecipes';
 import { ThemedView } from '@/components/ThemedView';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff', // Default background color
   },
   selectedCategoryInner: {
-    backgroundColor: '#dbdbdb', // Selected background color
+    backgroundColor: '#fff1d0', // Selected background color
   },
   categoryEmoji: {
     fontSize: 30,
@@ -126,11 +127,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 5,
     color: '#000000',
-  },
-  recipesContainer: {
-    backgroundColor: '#f5f5f5',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
   },
   sectionTitle: {
     fontSize: 20,

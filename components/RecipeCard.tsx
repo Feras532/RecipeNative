@@ -2,14 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, Animated, StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ThemedText } from './ThemedText';
-
-interface Recipe {
-    imageUrl: any;
-    title: string;
-    rating: number;
-    calories: number;
-    ingredients: string[];
-}
+import { Recipe } from './dummyRecipes';
 
 interface RecipeCardProps {
     recipe: Recipe;

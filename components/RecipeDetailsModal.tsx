@@ -7,6 +7,7 @@ interface Recipe {
   rating: number;
   calories: number;
   ingredients: string[];
+  steps: { description: string }[];
 }
 
 interface RecipeDetailsModalProps {
@@ -31,7 +32,10 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
             {recipe.ingredients?.map((ingredient, index) => (
               <Text key={index} style={styles.ingredient}>{ingredient}</Text>
             ))}
-
+            <Text style={styles.modalSectionTitle}>Steps:</Text>
+            {recipe.steps?.map((step, index) => (
+              <Text key={index} style={styles.step}>{index + 1}. {step.description}</Text>
+            ))}
             <Pressable onPress={onClose} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Close</Text>
             </Pressable>
@@ -46,33 +50,41 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: '#ffff',
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: '#fff1d0',
   },
   modalImage: {
     alignItems: 'center',
-    minWidth: 100,
-
+  },
+  modalContent: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   modalDetails: {
     width: '100%',
-    backgroundColor: "#e3e3e3",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    height: '100%'
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#333',
+    marginBottom: 15,
+    textAlign: 'center',
   },
   modalSectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#444',
     marginBottom: 10,
+    textAlign: 'left',
+    width: '100%',
   },
   ingredient: {
     fontSize: 16,
@@ -80,18 +92,24 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     textAlign: 'left',
   },
+  step: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 5,
+    textAlign: 'left',
+  },
   closeButton: {
     marginTop: 20,
-    marginBottom: 20,
     backgroundColor: '#ff6347',
-    padding: 10,
-    alignSelf: 'center',
-    width: '40%',
-    borderRadius: 4
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
   },
   closeButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
