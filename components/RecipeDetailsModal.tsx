@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
+import { ScrollView } from 'react-native';
 
 interface Recipe {
   imageUrl: any;
@@ -18,6 +19,17 @@ interface RecipeDetailsModalProps {
 }
 
 const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe, onClose }) => {
+  const [userRating, setUserRating] = useState<number>(0);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
+
+  const handleRating = (rating: number) => {
+    setUserRating(rating);
+  };
+
+  const handleSave = () => {
+    setIsSaved(!isSaved);
+  };
+
   if (!recipe) return null;
 
   return (
@@ -26,7 +38,7 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
         <View style={styles.modalImage}>
           <Image source={recipe.imageUrl} style={styles.modalImage} />
         </View>
-        <View style={styles.modalContent}>
+        <ScrollView style={styles.modalContent}>
           <View style={styles.modalDetails}>
             <Text style={styles.modalTitle}>{recipe.title}</Text>
             <View style={styles.ratingAndCalories}>
@@ -47,11 +59,33 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
             {recipe.steps?.map((step, index) => (
               <Text key={index} style={styles.step}>{index + 1}. {step.description}</Text>
             ))}
+            <View style={styles.userRatingSection}>
+              <Text style={styles.userRatingText}>Did you like the recipe?</Text>
+              <View style={styles.starsContainer}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <TouchableOpacity key={star} onPress={() => handleRating(star)}>
+                    <Ionicons
+                      name={userRating >= star ? 'star' : 'star-outline'}
+                      size={30}
+                      color="#FFD700"
+                      style={styles.starIcon}
+                    />
+                  </TouchableOpacity>
+                ))}
+                <Pressable style={styles.saveButton} onPress={handleSave}>
+                  <Ionicons
+                    name={isSaved ? 'bookmark' : 'bookmark-outline'}
+                    size={30}
+                    color="#fff"
+                  />
+                </Pressable>
+              </View>
+            </View>
             <Pressable onPress={onClose} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Close</Text>
             </Pressable>
           </View>
-        </View>
+        </ScrollView>
       </View>
     </Modal>
   );
@@ -72,7 +106,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -116,6 +149,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     marginTop: 20,
+    marginBottom: 20,
     backgroundColor: '#ff6347',
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -135,6 +169,37 @@ const styles = StyleSheet.create({
   detailItem: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  userRatingSection: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  userRatingText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+  },
+  starsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  starIcon: {
+    marginHorizontal: 5,
+  },
+  saveButton: {
+    backgroundColor: '#32CD32',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    marginLeft: 10,
+  },
+  saveButtonText: {
+    color: '#000',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
