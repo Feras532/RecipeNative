@@ -17,7 +17,17 @@ export interface Recipe {
       { description: "Mix meat with fat and salt." },
       { description: "Shape into patties." },
       { description: "Grill until cooked through." },
-      { description: "Assemble the burger with your favorite toppings." }
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
+      { description: "Assemble the burger with your favorite toppings." },
     ]
   };
   

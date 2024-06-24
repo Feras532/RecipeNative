@@ -55,6 +55,7 @@ const HomeScreen: React.FC = () => {
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#2b2b2b' }}>
       <ThemedText style={styles.welcomeText}>Welcome Feras 👋</ThemedText>
+      <ThemedText style={styles.questionText}>What do you like to munch on? 👀</ThemedText>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
         {categories && categories.map((category, index) => (
           <TouchableOpacity
@@ -93,6 +94,12 @@ const styles = StyleSheet.create({
     marginTop: 40,
     textAlign: 'center',
     color: '#ff6347',
+  },
+  questionText: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginVertical: 10,
+    color: '#000',
   },
   categoryScroll: {},
   recipesSection: {
