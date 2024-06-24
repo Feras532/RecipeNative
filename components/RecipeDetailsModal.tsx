@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
 
@@ -28,6 +29,16 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
         <View style={styles.modalContent}>
           <View style={styles.modalDetails}>
             <Text style={styles.modalTitle}>{recipe.title}</Text>
+            <View style={styles.ratingAndCalories}>
+              <View style={styles.detailItem}>
+                <Ionicons name="star" size={20} color="#FFD700" />
+                <Text style={styles.detailText}>{recipe.rating}</Text>
+              </View>
+              <View style={styles.detailItem}>
+                <Ionicons name="flame" size={20} color="#FF4500" />
+                <Text style={styles.detailText}>{recipe.calories} kcal</Text>
+              </View>
+            </View>
             <Text style={styles.modalSectionTitle}>Ingredients:</Text>
             {recipe.ingredients?.map((ingredient, index) => (
               <Text key={index} style={styles.ingredient}>{ingredient}</Text>
@@ -71,6 +82,11 @@ const styles = StyleSheet.create({
   modalDetails: {
     width: '100%',
   },
+  detailText: {
+    fontSize: 18,
+    color: '#444',
+    marginLeft: 5,
+  },
   modalTitle: {
     fontSize: 28,
     fontWeight: 'bold',
@@ -110,6 +126,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  ratingAndCalories: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 20,
+  },
+  detailItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

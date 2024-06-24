@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCard from '@/components/RecipeCard';
 import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
-
+import { Recipe } from '@/components/dummyRecipes';
 const dummyProfileData = {
   name: 'Feras Alferas',
   email: 'Feras.Alsinan@lazywait.com',
@@ -37,14 +37,18 @@ export default function Profile() {
         <View style={styles.section}>
           <Text style={styles.sectionHeader}>Favorite Recipes</Text>
           {dummyProfileData.favoriteRecipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} />
+            <RecipeCard key={index} recipe={recipe} onPress={function (): void {
+              throw new Error('Function not implemented.');
+            } } />
           ))}
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionHeader}>Saved Recipes</Text>
           {dummyProfileData.savedRecipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} />
+            <RecipeCard key={index} recipe={recipe} onPress={function (): void {
+              throw new Error('Function not implemented.');
+            } } />
           ))}
         </View>
 
