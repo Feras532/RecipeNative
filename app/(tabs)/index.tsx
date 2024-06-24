@@ -1,70 +1,124 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
+import React, { useState } from 'react';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import RecipeCard, { Recipe } from '@/components/RecipeCard';
 import { ThemedView } from '@/components/ThemedView';
+import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
 
-export default function HomeScreen() {
+// Dummy data
+const categories = [
+  { emoji: '🍳', label: 'Breakfast' },
+  { emoji: '🍔', label: 'Lunch' },
+  { emoji: '🍝', label: 'Dinner' },
+  { emoji: '🍰', label: 'High Cal' },
+  { emoji: '🥗', label: 'Low Cal' },
+  { emoji: '🍏', label: 'Healthy' },
+  { emoji: '⚡', label: 'Fast' },
+];
+
+const HomeScreen: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const handleCategoryPress = (label: string) => {
+    setSelectedCategory(label);
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
+    <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
+      <ThemedText style={styles.welcomeText}>Welcome Feras 👋</ThemedText>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
+        {categories.map((category, index) => (
+          <TouchableOpacity
+            key={index}
+            style={styles.categoryButton}
+            onPress={() => handleCategoryPress(category.label)}
+          >
+            <View style={[
+              styles.categoryInner,
+              selectedCategory === category.label && styles.selectedCategoryInner,
+            ]}>
+              <Text style={styles.categoryEmoji}>{category.emoji}</Text>
+            </View>
+            <ThemedText style={styles.categoryLabel}>{category.label}</ThemedText>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      <View>
+        <ThemedText style={styles.sectionTitle}>Popular Recipes</ThemedText>
+        <ThemedView style={styles.recipesSection}>
+          <RecipeCard recipe={burgerRecipe} />
+          <RecipeCard recipe={noodlesRecipe} />
+          <RecipeCard recipe={saladRecipe} />
+          <RecipeCard recipe={tacoRecipe} />
+          <RecipeCard recipe={burgerRecipe} />
+          <RecipeCard recipe={tacoRecipe} />
+          <RecipeCard recipe={burgerRecipe} />
+          <RecipeCard recipe={burgerRecipe} />
+          <RecipeCard recipe={saladRecipe} />
+          <RecipeCard recipe={burgerRecipe} />
+          <RecipeCard recipe={burgerRecipe} />
+          {/* Add more components */}
+        </ThemedView>
+      </View>
     </ParallaxScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 40,
+    textAlign: 'center',
+    color: '#ff6347',
+  },
+  categoryScroll: {},
+  recipesSection: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+  },
+  categoryButton: {
     alignItems: 'center',
-    gap: 8,
+    marginHorizontal: 4,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  categoryInner: {
+    borderRadius: 50,
+    height: 70,
+    width: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    borderWidth: 1,
+    backgroundColor: '#ffffff', // Default background color
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  selectedCategoryInner: {
+    backgroundColor: '#dbdbdb', // Selected background color
+  },
+  categoryEmoji: {
+    fontSize: 30,
+  },
+  categoryLabel: {
+    fontSize: 14,
+    marginTop: 5,
+    color: '#000000',
+  },
+  recipesContainer: {
+    backgroundColor: '#f5f5f5',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#ff6347',
   },
 });
+
+export default HomeScreen;

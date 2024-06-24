@@ -13,6 +13,8 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
+        tabBarShowLabel: false,
+        
       }}>
       <Tabs.Screen
         name="index"
@@ -24,14 +26,41 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="heart"
         options={{
-          title: 'Explore',
+          title: 'heart',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'heart' : 'heart-outline'} color={color} />
           ),
         }}
       />
+        <Tabs.Screen
+          name="compass"
+          options={{
+            title: 'compass',
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon name={focused ? 'compass' : 'compass-outline'} color={color} />
+            ),
+          }}
+        />
+      <Tabs.Screen
+        name="Notifications"
+        options={{
+          title: 'Notifications',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'notifications' : 'notifications-outline'} color={color} />
+          ),
+        }}
+      />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: 'Profile',
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
+            ),
+          }}
+        />
     </Tabs>
   );
 }
