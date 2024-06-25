@@ -69,7 +69,7 @@ const HomeScreen: React.FC = () => {
         onChangeText={setSearchText}
       />
       <ThemedText style={styles.exploreText}>
-        Explore Our Delicious Categories!
+        Explore Our Delicious Categories! 🍃
       </ThemedText>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
         {categories && categories.map((category, index) => (

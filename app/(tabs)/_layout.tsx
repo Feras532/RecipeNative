@@ -20,35 +20,17 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={"#B24B3D"} />
           ),
         }}
       />
-        {/* <Tabs.Screen
-          name="compass"
-          options={{
-            title: 'compass',
-            tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'compass' : 'compass-outline'} color={color} />
-            ),
-          }}
-        />
-      <Tabs.Screen
-        name="Notifications"
-        options={{
-          title: 'Notifications',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'notifications' : 'notifications-outline'} color={color} />
-          ),
-        }}
-      /> */}
         <Tabs.Screen
           name="profile"
           options={{
             title: 'Profile',
-            tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
+            tabBarIcon: ({ focused }) => (
+              <TabBarIcon name={focused ? 'person' : 'person-outline'} color={"#B24B3D"} />
             ),
           }}
         />
