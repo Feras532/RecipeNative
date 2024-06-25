@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Pressable, Text, View, StyleSheet, Image, Animated, TextInput } from 'react-native';
+import { Pressable, Text, View, StyleSheet, TextInput } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
+import AnimatedCoverImage from "@/components/login/AnimatedCoverImage"
 
-export default function Login() {
+export default function index() {
     const [activeButton, setActiveButton] = useState('LOGIN');
-    const animatedValue = new Animated.Value(0);
 
     const handlePress = (button: any) => {
         setActiveButton(button);
@@ -13,17 +13,7 @@ export default function Login() {
 
     return (
         <View style={styles.container}>
-            <Animated.Image
-                source={require("../assets/images/cover.png")}
-                style={[styles.animatedImage, {
-                    transform: [{
-                        translateY: animatedValue.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [0, -100],
-                        }),
-                    }],
-                }]}
-            />
+            <AnimatedCoverImage />
             <View style={styles.containerLoginSignup}>
                 <View style={styles.loginSignup}>
                     <Pressable onPress={() => handlePress('LOGIN')} style={[styles.button, activeButton === 'LOGIN' && styles.activeButton]}>
@@ -54,7 +44,7 @@ export default function Login() {
                         placeholderTextColor="#888"
                         secureTextEntry
                     />
-                    <Link href={"/(tabs)"}style={styles.submitButton}>
+                    <Link href={"/(tabs)"} style={styles.submitButton}>
                         <Pressable >
                             <Text style={styles.submitButtonText}>Submit</Text>
                         </Pressable>
@@ -70,12 +60,6 @@ const styles = StyleSheet.create({
         flex: 1,
         height: '100%',
         width: '100%',
-    },
-    animatedImage: {
-        height: 400,
-        width: '100%',
-        alignItems: 'center',
-        overflow: 'visible',
     },
     containerLoginSignup: {
         backgroundColor: '#fff',
@@ -108,7 +92,6 @@ const styles = StyleSheet.create({
     activeBtnText: {
         color: '#ffff',
         fontWeight: 'bold',
-
     },
     formContainer: {
         padding: 20,
