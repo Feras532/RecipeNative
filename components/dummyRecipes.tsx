@@ -19,18 +19,8 @@ export interface Recipe {
       { description: "Shape into patties." },
       { description: "Grill until cooked through." },
       { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-      { description: "Assemble the burger with your favorite toppings." },
-    ],
-    time: 110
+     ],
+    time: 80
   };
   
   export const tacoRecipe: Recipe = {

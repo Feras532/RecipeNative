@@ -2,15 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
 import { ScrollView } from 'react-native';
-
-interface Recipe {
-  imageUrl: any;
-  title: string;
-  rating: number;
-  calories: number;
-  ingredients: string[];
-  steps: { description: string }[];
-}
+import { Recipe } from './dummyRecipes';
 
 interface RecipeDetailsModalProps {
   visible: boolean;
@@ -50,6 +42,11 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
                 <Ionicons name="flame" size={20} color="#FF4500" />
                 <Text style={styles.detailText}>{recipe.calories} kcal</Text>
               </View>
+              <View style={styles.detailItem}>
+                <Ionicons name='time' size={16} color='#388ce0' />
+                <Text style={styles.detailText}>{recipe.time} min</Text>
+              </View>
+
             </View>
             <Text style={styles.modalSectionTitle}>Ingredients:</Text>
             {recipe.ingredients?.map((ingredient, index) => (

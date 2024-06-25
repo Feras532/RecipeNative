@@ -4,7 +4,6 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import RecipeCard from '@/components/RecipeCard';
 import { Recipe } from '@/components/dummyRecipes';
-
 import { ThemedView } from '@/components/ThemedView';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
