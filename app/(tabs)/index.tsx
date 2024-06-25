@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import RecipeCard from '@/components/RecipeCard';
@@ -8,7 +9,6 @@ import { ThemedView } from '@/components/ThemedView';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
 
-// Dummy data
 const categories = [
   { emoji: '🔥', label: 'Hot' },
   { emoji: '🍳', label: 'Breakfast' },
@@ -19,7 +19,7 @@ const categories = [
   { emoji: '🍏', label: 'Healthy' },
   { emoji: '⚡', label: 'Fast' },
 ];
-// Dummy Data
+
 const recipes = [
   burgerRecipe,
   noodlesRecipe,
@@ -61,13 +61,16 @@ const HomeScreen: React.FC = () => {
         <Text style={styles.feastText}> FEAST?</Text>
         <Text style={styles.categoryEmoji}>😋</Text>
       </ThemedText>
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Search recipes..."
-        placeholderTextColor="#999"
-        value={searchText}
-        onChangeText={setSearchText}
-      />
+      <View style={styles.searchContainer}>
+        <Ionicons name="search" size={20} color="#B24B3D" style={styles.searchIcon} />
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search recipes..."
+          placeholderTextColor="#B24B3D"
+          value={searchText}
+          onChangeText={setSearchText}
+        />
+      </View>
       <ThemedText style={styles.exploreText}>
         Explore Our Delicious Categories! 🍃
       </ThemedText>
@@ -102,33 +105,39 @@ const HomeScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#B24B3D",
+    backgroundColor: '#fff',
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  searchBar: {
+    flex: 1,
+    fontSize: 16,
+  },
   exploreText: {
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'left',
     color: '#000',
-
   },
   welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 30,
     textAlign: 'left',
-    color: '#000', 
+    color: '#000',
   },
   feastText: {
-    color: '#ff6347', // Color for "FEAST"
-  },
-  searchBar: {
-    paddingHorizontal: 10,
-    marginBottom: 10,
-    paddingVertical: 8,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    backgroundColor: '#fff',
-    color: '#000',
-    fontSize: 16,
+    color: '#B24B3D', // Color for "FEAST"
   },
   questionText: {
     fontSize: 18,
@@ -156,11 +165,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
     borderWidth: 1,
-    borderColor: '#525252',
+    borderColor: '#ccc',
     backgroundColor: '#ffffff', // Default background color
   },
   selectedCategoryInner: {
     backgroundColor: '#fff1d0', // Selected background color
+    borderColor: "#B24B3D",
   },
   categoryEmoji: {
     fontSize: 30,
