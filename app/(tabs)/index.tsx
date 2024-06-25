@@ -35,7 +35,7 @@ const recipes = [
 ];
 
 const HomeScreen: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>('Hot');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [searchText, setSearchText] = useState('');
@@ -68,6 +68,9 @@ const HomeScreen: React.FC = () => {
         value={searchText}
         onChangeText={setSearchText}
       />
+      <ThemedText style={styles.exploreText}>
+        Explore Our Delicious Categories!
+      </ThemedText>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
         {categories && categories.map((category, index) => (
           <TouchableOpacity
@@ -86,7 +89,6 @@ const HomeScreen: React.FC = () => {
         ))}
       </ScrollView>
       <View>
-        <ThemedText style={styles.sectionTitle}>Recommended</ThemedText>
         <ThemedView style={styles.recipesSection}>
           {recipes && recipes.map((recipe, index) => (
             <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
@@ -100,12 +102,19 @@ const HomeScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  exploreText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    color: '#000',
+
+  },
   welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 40,
+    marginTop: 30,
     textAlign: 'left',
-    color: '#000', // Changed to black
+    color: '#000', 
   },
   feastText: {
     color: '#ff6347', // Color for "FEAST"
@@ -155,7 +164,7 @@ const styles = StyleSheet.create({
   },
   categoryEmoji: {
     fontSize: 30,
-    lineHeight: 60, 
+    lineHeight: 60,
   },
   categoryLabel: {
     fontSize: 14,
