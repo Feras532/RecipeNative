@@ -25,8 +25,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
                 <Animated.View style={[styles.imageContainer, { transform: [{ translateY }] }]}>
                     <Animated.Image source={recipe.imageUrl} style={styles.recipeImage} />
                 </Animated.View>
-                <View style={styles.recipeInfo}>
                     <ThemedText style={styles.recipeTitle}>{recipe.title}</ThemedText>
+                <View style={styles.recipeInfo}>
                     <ThemedText style={styles.recipeRating}>
                         <Ionicons name='star' size={16} color='#FFD700' />
                         {' '}{recipe.rating}
@@ -36,7 +36,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
                         {' '}{recipe.calories}
                     </ThemedText>
                     <ThemedText style={styles.recipeCalories}>
-                        <Ionicons name='time' size={16} color='#FF4500' />
+                        <Ionicons name='time' size={16} color='#388ce0' />
                         {' '}{recipe.time}
                     </ThemedText>
                 </View>
@@ -65,21 +65,37 @@ const styles = StyleSheet.create({
     },
     recipeInfo: {
         padding: 10,
+        fontSize: 30,
+        color: '#888',
+        flexDirection: 'row',
         alignItems: 'center',
+        textAlign: 'center',
+        justifyContent: 'space-between'
     },
     recipeTitle: {
+        marginTop: 4,
         fontSize: 18,
         fontWeight: 'bold',
+        textAlign: 'center'
     },
     recipeRating: {
         fontSize: 14,
+        justifyContent: 'center',
+        alignItems: 'center',
         color: '#888',
-        marginTop: 5,
     },
     recipeCalories: {
         fontSize: 14,
+        justifyContent: 'center',
+        alignItems: 'center',
+
         color: '#888',
-        marginTop: 5,
+    },
+    recipeTime: {
+        fontSize: 14,
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#888',
     },
 });
 
