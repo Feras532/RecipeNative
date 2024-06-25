@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         fontSize: 24,
-        color: '#B24B3D',
+        color: '#ff6347',
         marginRight: 10,
     },
     label: {
