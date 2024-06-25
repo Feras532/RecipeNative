@@ -36,11 +36,11 @@ export default function Signup() {
                 placeholderTextColor="#888"
                 secureTextEntry
             />
-            <Link href={"/(tabs)"} style={styles.submitButton}>
-                <Pressable>
+            <Pressable>
+                <Link href={"/(tabs)"} style={styles.submitButton}>
                     <Text style={styles.submitButtonText}>Submit</Text>
-                </Pressable>
-            </Link>
+                </Link>
+            </Pressable>
         </View>
     );
 }
