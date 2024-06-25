@@ -72,13 +72,7 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
                     />
                   </TouchableOpacity>
                 ))}
-                <Pressable style={styles.saveButton} onPress={handleSave}>
-                  <Ionicons
-                    name={isSaved ? 'bookmark' : 'bookmark-outline'}
-                    size={30}
-                    color="#fff"
-                  />
-                </Pressable>
+
               </View>
             </View>
             <Pressable onPress={onClose} style={styles.closeButton}>
@@ -188,18 +182,6 @@ const styles = StyleSheet.create({
   },
   starIcon: {
     marginHorizontal: 5,
-  },
-  saveButton: {
-    backgroundColor: '#32CD32',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    marginLeft: 10,
-  },
-  saveButtonText: {
-    color: '#000',
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 });
 

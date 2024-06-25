@@ -35,6 +35,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
                         <Ionicons name='flame' size={16} color='#FF4500' />
                         {' '}{recipe.calories}
                     </ThemedText>
+                    <ThemedText style={styles.recipeCalories}>
+                        <Ionicons name='time' size={16} color='#FF4500' />
+                        {' '}{recipe.time}
+                    </ThemedText>
                 </View>
             </View>
         </TouchableOpacity>

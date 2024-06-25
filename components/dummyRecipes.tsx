@@ -3,6 +3,7 @@ export interface Recipe {
     title: string;
     rating: number;
     calories: number;
+    time : number;
     ingredients: string[];
     steps: { description: string }[];
   }
@@ -28,7 +29,8 @@ export interface Recipe {
       { description: "Assemble the burger with your favorite toppings." },
       { description: "Assemble the burger with your favorite toppings." },
       { description: "Assemble the burger with your favorite toppings." },
-    ]
+    ],
+    time: 110
   };
   
   export const tacoRecipe: Recipe = {
@@ -41,7 +43,8 @@ export interface Recipe {
       { description: "Cook the ground beef until browned." },
       { description: "Place the beef into the taco shell." },
       { description: "Top with lettuce, cheese, and salsa." }
-    ]
+    ],
+    time: 40
   };
   
   export const noodlesRecipe: Recipe = {
@@ -54,7 +57,8 @@ export interface Recipe {
       { description: "Boil the noodles until soft." },
       { description: "Stir-fry the vegetables." },
       { description: "Mix noodles with vegetables and soy sauce." }
-    ]
+    ],
+    time: 30
   };
   
   export const saladRecipe: Recipe = {
@@ -67,6 +71,7 @@ export interface Recipe {
       { description: "Chop the lettuce, tomatoes, and cucumbers." },
       { description: "Mix all the vegetables together." },
       { description: "Drizzle with olive oil and lemon juice." }
-    ]
+    ],
+    time: 20
   };
   

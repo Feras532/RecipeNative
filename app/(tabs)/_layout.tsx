@@ -25,16 +25,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="heart"
-        options={{
-          title: 'heart',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'heart' : 'heart-outline'} color={color} />
-          ),
-        }}
-      /> */}
-        <Tabs.Screen
+        {/* <Tabs.Screen
           name="compass"
           options={{
             title: 'compass',
@@ -51,7 +42,7 @@ export default function TabLayout() {
             <TabBarIcon name={focused ? 'notifications' : 'notifications-outline'} color={color} />
           ),
         }}
-      />
+      /> */}
         <Tabs.Screen
           name="profile"
           options={{
