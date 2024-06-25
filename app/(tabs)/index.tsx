@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import RecipeCard from '@/components/RecipeCard';
@@ -10,6 +10,7 @@ import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/componen
 
 // Dummy data
 const categories = [
+  { emoji: '🔥', label: 'Hot' },
   { emoji: '🍳', label: 'Breakfast' },
   { emoji: '🍔', label: 'Lunch' },
   { emoji: '🍝', label: 'Dinner' },
@@ -37,6 +38,7 @@ const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [searchText, setSearchText] = useState('');
 
   const handleCategoryPress = (label: string) => {
     setSelectedCategory(label);
@@ -54,8 +56,18 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#2b2b2b' }}>
-      <ThemedText style={styles.welcomeText}>Welcome Feras 👋</ThemedText>
-      <ThemedText style={styles.questionText}>What do you like to munch on? 👀</ThemedText>
+      <ThemedText style={styles.welcomeText}>
+        Ready to
+        <Text style={styles.feastText}> FEAST?</Text>
+        <Text style={styles.categoryEmoji}>😋</Text>
+      </ThemedText>
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search recipes..."
+        placeholderTextColor="#999"
+        value={searchText}
+        onChangeText={setSearchText}
+      />
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
         {categories && categories.map((category, index) => (
           <TouchableOpacity
@@ -74,7 +86,7 @@ const HomeScreen: React.FC = () => {
         ))}
       </ScrollView>
       <View>
-        <ThemedText style={styles.sectionTitle}>Popular Recipes</ThemedText>
+        <ThemedText style={styles.sectionTitle}>Recommended</ThemedText>
         <ThemedView style={styles.recipesSection}>
           {recipes && recipes.map((recipe, index) => (
             <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
@@ -92,8 +104,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 40,
-    textAlign: 'center',
-    color: '#ff6347',
+    textAlign: 'left',
+    color: '#000', // Changed to black
+  },
+  feastText: {
+    color: '#ff6347', // Color for "FEAST"
+  },
+  searchBar: {
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: '#fff',
+    color: '#000',
+    fontSize: 16,
   },
   questionText: {
     fontSize: 18,
@@ -129,6 +155,7 @@ const styles = StyleSheet.create({
   },
   categoryEmoji: {
     fontSize: 30,
+    lineHeight: 60, 
   },
   categoryLabel: {
     fontSize: 14,
