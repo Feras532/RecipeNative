@@ -1,62 +1,81 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCard from '@/components/RecipeCard';
 import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
-import { Recipe } from '@/components/dummyRecipes';
+import Accordion from 'react-native-collapsible/Accordion';
+
 const dummyProfileData = {
   name: 'Feras Alferas',
   email: 'Feras.Alsinan@lazywait.com',
   bio: 'Food enthusiast with a knack for discovering and sharing delicious recipes.',
   location: 'Qatif, Saudi Arabia',
-  favoriteRecipes: [
-    { ...burgerRecipe },
-    { ...noodlesRecipe },
-  ],
-  savedRecipes: [
-    { ...saladRecipe },
-    { ...tacoRecipe },
-  ],
-  recentActivity: [
-    'Liked Spicy Noodles recipe',
-    'Saved Caesar Salad recipe',
-    'Commented on Fish Tacos recipe',
-  ],
 };
 
+const SECTIONS = [
+  {
+    title: '⭐',
+    content: [burgerRecipe],
+  },
+  {
+    title: '⭐⭐',
+    content: [noodlesRecipe],
+  },
+  {
+    title: '⭐⭐⭐',
+    content: [saladRecipe],
+  },
+  {
+    title: '⭐⭐⭐⭐',
+    content: [tacoRecipe],
+  },
+  {
+    title: '⭐⭐⭐⭐⭐',
+    content: [burgerRecipe, noodlesRecipe],
+  },
+];
+
 export default function Profile() {
+  const [activeSections, setActiveSections] = useState<number[]>([]);
+
+  const renderHeader = (section: { title: string; content: any[] }) => {
+    return (
+      <View style={styles.headerContainer}>
+        <Text style={styles.sectionHeader}>{section.title}</Text>
+      </View>
+    );
+  };
+
+  const renderContent = (section: { title: string; content: any[] }) => {
+    return (
+      <View style={styles.recipeContainer}>
+        {section.content.map((recipe, index) => (
+          <RecipeCard key={index} recipe={recipe} onPress={() => {}} />
+        ))}
+      </View>
+    );
+  };
+
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Image source={require("../../assets/images/man.png")} style={styles.profileImage} />
+        {/* USER DETAILS */}
+        <Image source={require('../../assets/images/man.png')} style={styles.profileImage} />
         <Text style={styles.name}>{dummyProfileData.name}</Text>
         <Text style={styles.email}>{dummyProfileData.email}</Text>
         <Text style={styles.bio}>{dummyProfileData.bio}</Text>
         <Text style={styles.location}>{dummyProfileData.location}</Text>
 
+        {/* USER RATINGS */}
         <View style={styles.section}>
-          <Text style={styles.sectionHeader}>Favorite Recipes</Text>
-          {dummyProfileData.favoriteRecipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} onPress={function (): void {
-              throw new Error('Function not implemented.');
-            } } />
-          ))}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionHeader}>Saved Recipes</Text>
-          {dummyProfileData.savedRecipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} onPress={function (): void {
-              throw new Error('Function not implemented.');
-            } } />
-          ))}
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionHeader}>Recent Activity</Text>
-          {dummyProfileData.recentActivity.map((activity, index) => (
-            <Text key={index} style={styles.activity}>{activity}</Text>
-          ))}
+          <Text style={styles.sectionHeader}>My Ratings:</Text>
+          <Accordion
+            sections={SECTIONS}
+            activeSections={activeSections}
+            renderHeader={renderHeader}
+            renderContent={renderContent}
+            onChange={(sections) => setActiveSections(sections)}
+          />
         </View>
       </ScrollView>
     </ParallaxScrollView>
@@ -112,11 +131,19 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     width: '100%',
   },
-  activity: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 4,
-    textAlign: 'left',
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: '#f7f7f7',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  recipeContainer: {
+    marginTop: 5,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
   },
 });
-

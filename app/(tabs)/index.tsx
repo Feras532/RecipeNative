@@ -18,7 +18,7 @@ const categories = [
   { emoji: '🍏', label: 'Healthy' },
   { emoji: '⚡', label: 'Fast' },
 ];
-
+// Dummy Data
 const recipes = [
   burgerRecipe,
   noodlesRecipe,
