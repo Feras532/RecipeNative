@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCard from '@/components/RecipeCard';
-import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
+import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe, Recipe } from '@/components/dummyRecipes';
 import Accordion from 'react-native-collapsible/Accordion';
+import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 
 const dummyProfileData = {
   name: 'Feras Alferas',
@@ -31,12 +32,24 @@ const SECTIONS = [
   },
   {
     title: '⭐⭐⭐⭐⭐',
-    content: [burgerRecipe, noodlesRecipe],
+    content: [burgerRecipe, noodlesRecipe, tacoRecipe, burgerRecipe, saladRecipe],
   },
 ];
 
 export default function Profile() {
   const [activeSections, setActiveSections] = useState<number[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+
+  const handleRecipePress = (recipe: Recipe) => {
+    setSelectedRecipe(recipe);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedRecipe(null);
+  };
 
   const renderHeader = (section: { title: string; content: any[] }) => {
     return (
@@ -50,7 +63,7 @@ export default function Profile() {
     return (
       <View style={styles.recipeContainer}>
         {section.content.map((recipe, index) => (
-          <RecipeCard key={index} recipe={recipe} onPress={() => {}} />
+          <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
         ))}
       </View>
     );
@@ -77,6 +90,9 @@ export default function Profile() {
             onChange={(sections) => setActiveSections(sections)}
           />
         </View>
+
+        {/* Recipe Details Modal */}
+        <RecipeDetailsModal visible={modalVisible} recipe={selectedRecipe} onClose={closeModal} />
       </ScrollView>
     </ParallaxScrollView>
   );
@@ -141,7 +157,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ddd',
   },
   recipeContainer: {
-    marginTop: 5,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
