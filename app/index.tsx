@@ -54,11 +54,11 @@ export default function Login() {
                         placeholderTextColor="#888"
                         secureTextEntry
                     />
-                    <Pressable style={styles.submitButton}>
-                        <Link href={"/(tabs)"}>
+                    <Link href={"/(tabs)"}style={styles.submitButton}>
+                        <Pressable >
                             <Text style={styles.submitButtonText}>Submit</Text>
-                        </Link>
-                    </Pressable>
+                        </Pressable>
+                    </Link>
                 </View>
             </View>
         </View>
@@ -106,7 +106,9 @@ const styles = StyleSheet.create({
         fontSize: 24,
     },
     activeBtnText: {
-        color: '#000',
+        color: '#ffff',
+        fontWeight: 'bold',
+
     },
     formContainer: {
         padding: 20,
@@ -139,11 +141,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#B24B3D',
         borderRadius: 10,
         padding: 15,
+        textAlign: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
         marginTop: 20,
         elevation: 2,
     },
     submitButtonText: {
+        textAlign: 'center',
         color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
