@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
@@ -9,6 +9,8 @@ export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const passwordInputRef = useRef<TextInput>(null);
+    const confirmPasswordInputRef = useRef<TextInput>(null);
     const router = useRouter();
 
     const handleSignup = async () => {
@@ -43,6 +45,8 @@ export default function Signup() {
                 keyboardType="email-address"
                 value={email}
                 onChangeText={setEmail}
+                returnKeyType="next"
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
             />
             <View style={styles.inputWrapper}>
                 <Ionicons name='key' style={styles.icon} />
@@ -55,6 +59,9 @@ export default function Signup() {
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
+                ref={passwordInputRef}
+                returnKeyType="next"
+                onSubmitEditing={() => confirmPasswordInputRef.current?.focus()}
             />
             <View style={styles.inputWrapper}>
                 <Ionicons name='key' style={styles.icon} />
@@ -67,6 +74,9 @@ export default function Signup() {
                 secureTextEntry
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
+                ref={confirmPasswordInputRef}
+                returnKeyType="done"
+                onSubmitEditing={handleSignup}
             />
             <Pressable onPress={handleSignup}>
                 <View style={styles.submitButton}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
@@ -8,7 +8,9 @@ import { app } from "@/firebaseConfig";
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const passwordInputRef = useRef<TextInput>(null);
     const router = useRouter();
+
     const handleLogin = async () => {
         try {
             const auth = getAuth(app);
@@ -33,6 +35,8 @@ export default function Login() {
                 keyboardType="email-address"
                 value={email}
                 onChangeText={setEmail}
+                returnKeyType="next"
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
             />
             <View style={styles.inputWrapper}>
                 <Ionicons name='key' style={styles.icon} />
@@ -45,6 +49,9 @@ export default function Login() {
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
+                ref={passwordInputRef}
+                returnKeyType="done"
+                onSubmitEditing={handleLogin}
             />
             <Pressable style={styles.submitButton} onPress={handleLogin}>
                 <Text style={styles.submitButtonText}>Submit</Text>
