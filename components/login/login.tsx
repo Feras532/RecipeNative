@@ -27,7 +27,7 @@ export default function Login() {
                 secureTextEntry
             />
             <Pressable>
-                <Link href={"/(tabs)"} style={styles.submitButton}>
+                <Link href={"/(auth)/Otp"} style={styles.submitButton}>
                     <Text style={styles.submitButtonText}>Submit</Text>
                 </Link>
             </Pressable>
