@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
 import RecipeCard from '@/components/RecipeCard';
 import { Recipe } from '@/components/dummyRecipes';
-import { ThemedView } from '@/components/ThemedView';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
 
@@ -56,11 +54,11 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#2b2b2b' }}>
-      <ThemedText style={styles.welcomeText}>
+      <Text style={styles.welcomeText}>
         Ready to
         <Text style={styles.feastText}> FEAST?</Text>
         <Text style={styles.categoryEmoji}>😋</Text>
-      </ThemedText>
+      </Text>
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color="#B24B3D" style={styles.searchIcon} />
         <TextInput
@@ -71,9 +69,9 @@ const HomeScreen: React.FC = () => {
           onChangeText={setSearchText}
         />
       </View>
-      <ThemedText style={styles.exploreText}>
+      <Text style={styles.exploreText}>
         Explore Our Delicious Categories! 🍃
-      </ThemedText>
+      </Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
         {categories && categories.map((category, index) => (
           <TouchableOpacity
@@ -87,16 +85,16 @@ const HomeScreen: React.FC = () => {
             ]}>
               <Text style={styles.categoryEmoji}>{category.emoji}</Text>
             </View>
-            <ThemedText style={styles.categoryLabel}>{category.label}</ThemedText>
+            <Text style={styles.categoryLabel}>{category.label}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
       <View>
-        <ThemedView style={styles.recipesSection}>
+        <View style={styles.recipesSection}>
           {recipes && recipes.map((recipe, index) => (
             <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
           ))}
-        </ThemedView>
+        </View>
       </View>
 
       <RecipeDetailsModal visible={modalVisible} recipe={selectedRecipe} onClose={closeModal} />

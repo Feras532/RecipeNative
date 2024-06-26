@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Animated, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Animated, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { ThemedText } from './ThemedText';
 import { Recipe } from './dummyRecipes';
 
 interface RecipeCardProps {
@@ -25,20 +24,20 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
                 <Animated.View style={[styles.imageContainer, { transform: [{ translateY }] }]}>
                     <Animated.Image source={recipe.imageUrl} style={styles.recipeImage} />
                 </Animated.View>
-                    <ThemedText style={styles.recipeTitle}>{recipe.title}</ThemedText>
+                    <Text style={styles.recipeTitle}>{recipe.title}</Text>
                 <View style={styles.recipeInfo}>
-                    <ThemedText style={styles.recipeRating}>
+                    <Text style={styles.recipeRating}>
                         <Ionicons name='star' size={16} color='#FFD700' />
                         {' '}{recipe.rating}
-                    </ThemedText>
-                    <ThemedText style={styles.recipeCalories}>
+                    </Text>
+                    <Text style={styles.recipeCalories}>
                         <Ionicons name='flame' size={16} color='#FF4500' />
                         {' '}{recipe.calories}
-                    </ThemedText>
-                    <ThemedText style={styles.recipeCalories}>
+                    </Text>
+                    <Text style={styles.recipeCalories}>
                         <Ionicons name='time' size={16} color='#388ce0' />
                         {' '}{recipe.time}
-                    </ThemedText>
+                    </Text>
                 </View>
             </View>
         </TouchableOpacity>
