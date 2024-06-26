@@ -1,21 +1,44 @@
-import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
-import React, { useRef, createRef, RefObject } from 'react';
+import { View, Text, Pressable, StyleSheet, TextInput, StyleProp, TextStyle } from 'react-native';
+import React, { useRef, createRef, RefObject, useState } from 'react';
 import { Link } from 'expo-router';
 import LottieView from 'lottie-react-native';
 
 const Otp = () => {
   const inputs: RefObject<TextInput>[] = Array(6).fill(null).map(() => createRef<TextInput>());
+  const [focusState, setFocusState] = useState(Array(6).fill(false));
 
   const handleOtpChange = (index: number, value: string) => {
-    if (value.length === 1 && index < inputs.length - 1) {
-      inputs[index + 1].current?.focus();
+    if (value.length === 1) {
+      if (index < inputs.length - 1) {
+        inputs[index + 1].current?.focus();
+      }
+    } else if (value.length === 0) {
+      if (index > 0) {
+        inputs[index - 1].current?.focus();
+      }
     }
-    // handle the OTP value change here if needed
+  };
+
+  const handleKeyPress = (index: number, e: any) => {
+    if (e.nativeEvent.key === 'Backspace' && index > 0) {
+      inputs[index - 1].current?.focus();
+    }
+  };
+
+  const handleFocus = (index: number) => {
+    const newFocusState = [...focusState];
+    newFocusState[index] = true;
+    setFocusState(newFocusState);
+  };
+
+  const handleBlur = (index: number) => {
+    const newFocusState = [...focusState];
+    newFocusState[index] = false;
+    setFocusState(newFocusState);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Otp</Text>
       <LottieView
         source={require('@/assets/animations/otp.json')}
         autoPlay
@@ -29,17 +52,19 @@ const Otp = () => {
           <TextInput
             key={index}
             ref={input}
-            style={styles.input}
+            style={[
+              styles.input,
+              focusState[index] && styles.inputFocused,
+            ]}
             keyboardType="number-pad"
             maxLength={1}
+            selectionColor="#B24B3D" // Change to desired cursor color
             onChangeText={(value) => handleOtpChange(index, value)}
+            onKeyPress={(e) => handleKeyPress(index, e)}
+            onFocus={() => handleFocus(index)}
+            onBlur={() => handleBlur(index)}
             returnKeyType="next"
             blurOnSubmit={false}
-            onSubmitEditing={() => {
-              if (index < inputs.length - 1) {
-                inputs[index + 1].current?.focus();
-              }
-            }}
           />
         ))}
       </View>
@@ -68,8 +93,8 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   animation: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
   },
   instructionText: {
     fontSize: 16,
@@ -98,6 +123,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
+  inputFocused: {
+    borderColor: '#B24B3D', // Change to desired focus color
+    backgroundColor: '#F8F0CC', // Optional: change background color on focus
+  },
   submitButton: {
     backgroundColor: '#B24B3D',
     borderRadius: 10,
@@ -107,6 +136,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     elevation: 2,
+    paddingHorizontal: 80,
   },
   submitButtonText: {
     color: '#fff',
