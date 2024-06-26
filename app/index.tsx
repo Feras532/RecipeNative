@@ -12,9 +12,9 @@ export default function Index() {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <AnimatedCoverImage />
-            <ScrollView style={styles.containerLoginSignup} showsVerticalScrollIndicator={false}>
+            <View style={styles.containerLoginSignup}>
                 <View style={styles.loginSignup}>
                     <Pressable onPress={() => handlePress('LOGIN')} style={[styles.button, activeButton === 'LOGIN' && styles.activeButton]}>
                         <Text style={[styles.btnText, activeButton === 'LOGIN' && styles.activeBtnText]}>LOGIN</Text>
@@ -24,8 +24,8 @@ export default function Index() {
                     </Pressable>
                 </View>
                 {activeButton === 'LOGIN' ? <Login /> : <Signup />}
-            </ScrollView>
-        </View>
+            </View>
+        </ScrollView>
     );
 }
 
