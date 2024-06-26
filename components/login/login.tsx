@@ -1,9 +1,25 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { app } from "@/firebaseConfig";
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const router = useRouter();
+    const handleLogin = async () => {
+        try {
+            const auth = getAuth(app);
+            await signInWithEmailAndPassword(auth, email, password);
+            router.push('/(tabs)');
+        } catch (error) {
+            Alert.alert('Error', 'Invalid email or password. Please try again.');
+            console.log("Error logging in:", error);
+        }
+    };
+
     return (
         <View style={styles.formContainer}>
             <View style={styles.inputWrapper}>
@@ -15,6 +31,8 @@ export default function Login() {
                 placeholder="Example@Lazywait.com"
                 placeholderTextColor="#888"
                 keyboardType="email-address"
+                value={email}
+                onChangeText={setEmail}
             />
             <View style={styles.inputWrapper}>
                 <Ionicons name='key' style={styles.icon} />
@@ -25,11 +43,11 @@ export default function Login() {
                 placeholder="*******"
                 placeholderTextColor="#888"
                 secureTextEntry
+                value={password}
+                onChangeText={setPassword}
             />
-            <Pressable>
-                <Link href={"/(auth)/Otp"} style={styles.submitButton}>
-                    <Text style={styles.submitButtonText}>Submit</Text>
-                </Link>
+            <Pressable style={styles.submitButton} onPress={handleLogin}>
+                <Text style={styles.submitButtonText}>Submit</Text>
             </Pressable>
         </View>
     );
@@ -74,7 +92,6 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     submitButtonText: {
-        textAlign: 'center',
         color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
