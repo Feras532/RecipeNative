@@ -1,9 +1,36 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
+import { router } from 'expo-router';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { app,auth } from "@/firebaseConfig";
 
 export default function Signup() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handleSignup = async () => {
+        if (password !== confirmPassword) {
+            console.log("pass doesnt match");
+            Alert.alert('Error', 'Passwords do not match');
+            return;
+        }
+
+        try {
+            console.log("Trying to getAuth");
+            const auth = getAuth(app);
+            console.log("Got the auth");
+            await createUserWithEmailAndPassword(auth, email, password);
+            console.log("completed signup");
+            router.push('/(auth)/Otp')
+        } catch (error) {
+            Alert.alert('Error',);
+            console.log("Error sigh.", error);
+        }
+    };
+
     return (
         <View style={styles.formContainer}>
             <View style={styles.inputWrapper}>
@@ -15,6 +42,8 @@ export default function Signup() {
                 placeholder="Example@Lazywait.com"
                 placeholderTextColor="#888"
                 keyboardType="email-address"
+                value={email}
+                onChangeText={setEmail}
             />
             <View style={styles.inputWrapper}>
                 <Ionicons name='key' style={styles.icon} />
@@ -25,6 +54,8 @@ export default function Signup() {
                 placeholder="*******"
                 placeholderTextColor="#888"
                 secureTextEntry
+                value={password}
+                onChangeText={setPassword}
             />
             <View style={styles.inputWrapper}>
                 <Ionicons name='key' style={styles.icon} />
@@ -35,11 +66,13 @@ export default function Signup() {
                 placeholder="*******"
                 placeholderTextColor="#888"
                 secureTextEntry
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
             />
-            <Pressable>
-                <Link href={"/(auth)/Otp"} style={styles.submitButton}>
+            <Pressable onPress={handleSignup}>
+                <View style={styles.submitButton}>
                     <Text style={styles.submitButtonText}>Submit</Text>
-                </Link>
+                </View>
             </Pressable>
         </View>
     );
