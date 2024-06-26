@@ -1,33 +1,32 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Link } from 'expo-router';
-import { router } from 'expo-router';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { app,auth } from "@/firebaseConfig";
+import { useRouter } from 'expo-router';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { app } from "@/firebaseConfig";
 
 export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const router = useRouter();
 
     const handleSignup = async () => {
         if (password !== confirmPassword) {
-            console.log("pass doesnt match");
             Alert.alert('Error', 'Passwords do not match');
             return;
         }
 
         try {
-            console.log("Trying to getAuth");
             const auth = getAuth(app);
-            console.log("Got the auth");
-            await createUserWithEmailAndPassword(auth, email, password);
-            console.log("completed signup");
-            router.push('/(auth)/Otp')
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await sendEmailVerification(user);
+            Alert.alert('Success', 'Verification email sent! Please check your email.');
+            router.push({ pathname: '/(auth)/Otp', params: { email } });
         } catch (error) {
-            Alert.alert('Error',);
-            console.log("Error sigh.", error);
+            Alert.alert('Error');
         }
     };
 
