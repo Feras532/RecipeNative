@@ -14,7 +14,15 @@ export default function Login() {
     const handleLogin = async () => {
         try {
             const auth = getAuth(app);
-            await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            await user.reload();
+            if (!user.emailVerified) {
+                router.push('/(auth)/Otp');
+                return;
+            }
+
             router.push('/(tabs)');
         } catch (error) {
             Alert.alert('Error', 'Invalid email or password. Please try again.');

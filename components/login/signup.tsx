@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail } from "firebase/auth";
 import { app } from "@/firebaseConfig";
 
 export default function Signup() {
@@ -21,6 +21,13 @@ export default function Signup() {
 
         try {
             const auth = getAuth(app);
+            const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+
+            if (signInMethods.length > 0) {
+                Alert.alert('Error', 'Email already in use');
+                return;
+            }
+
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
@@ -28,7 +35,7 @@ export default function Signup() {
             Alert.alert('Success', 'Verification email sent! Please check your email.');
             router.push({ pathname: '/(auth)/Otp', params: { email } });
         } catch (error) {
-            Alert.alert('Error');
+            Alert.alert('Error', 'An error occurred. Please try again.');
         }
     };
 

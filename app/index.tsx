@@ -38,8 +38,7 @@ const styles = StyleSheet.create({
     containerLoginSignup: {
         backgroundColor: '#fff',
         height: "100%",
-        borderTopRightRadius: 30,
-        borderTopLeftRadius: 30,
+        borderRadius: 30,
         marginRight: 5,
         marginLeft: 5,
         elevation: 10,
