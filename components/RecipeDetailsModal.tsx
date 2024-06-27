@@ -1,8 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
 import { ScrollView } from 'react-native';
 import { Recipe } from "@/types/types";
+import { auth, db } from "@/firebaseConfig";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 interface RecipeDetailsModalProps {
   visible: boolean;
@@ -12,14 +14,77 @@ interface RecipeDetailsModalProps {
 
 const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe, onClose }) => {
   const [userRating, setUserRating] = useState<number>(0);
-  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const user = auth.currentUser;
 
-  const handleRating = (rating: number) => {
-    setUserRating(rating);
+  useEffect(() => {
+    if (recipe && user) {
+      fetchUserRating();
+    }
+  }, [recipe, user]);
+
+  const fetchUserRating = async () => {
+    if (user && recipe) {
+      const userRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userRef);
+      const userData = userDoc.data();
+      const existingReview = userData?.reviews?.find((review: any) => review.recipeId === recipe.id);
+      setUserRating(existingReview?.rating || 0);
+    }
   };
 
-  const handleSave = () => {
-    setIsSaved(!isSaved);
+  const handleRating = async (rating: number) => {
+    if (user && recipe) {
+      await updateReviewInFirestore(recipe.id, rating);
+      setUserRating(rating);
+    }
+  };
+
+  const updateReviewInFirestore = async (recipeId: string, rating: number) => {
+    if (!user) return;
+
+    const userRef = doc(db, "users", user.uid);
+    const recipeRef = doc(db, "recipes", recipeId);
+
+    const userDoc = await getDoc(userRef);
+    const userData = userDoc.data();
+
+    const existingReview = userData?.reviews?.find((review: any) => review.recipeId === recipeId);
+
+    if (existingReview) {
+      // Remove the old review from user
+      await updateDoc(userRef, {
+        reviews: arrayRemove(existingReview)
+      });
+
+      // Update recipe rating
+      const recipeDoc = await getDoc(recipeRef);
+      const recipeData = recipeDoc.data();
+      if (recipeData) {
+        const updatedTotalRates = recipeData.totalRates - 1;
+        const updatedRating = ((recipeData.rating * recipeData.totalRates) - existingReview.rating + rating) / updatedTotalRates;
+        await updateDoc(recipeRef, {
+          rating: updatedRating,
+          totalRates: updatedTotalRates
+        });
+      }
+    }
+
+    // Add the new review
+    await updateDoc(userRef, {
+      reviews: arrayUnion({ recipeId, rating })
+    });
+
+    // Update recipe rating
+    const recipeDoc = await getDoc(recipeRef);
+    const recipeData = recipeDoc.data();
+    if (recipeData) {
+      const updatedTotalRates = recipeData.totalRates + 1;
+      const updatedRating = ((recipeData.rating * recipeData.totalRates) + rating) / updatedTotalRates;
+      await updateDoc(recipeRef, {
+        rating: updatedRating,
+        totalRates: updatedTotalRates
+      });
+    }
   };
 
   if (!recipe) return null;
@@ -77,6 +142,7 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
     </Modal>
   );
 };
+
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,

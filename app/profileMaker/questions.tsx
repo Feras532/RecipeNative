@@ -50,9 +50,10 @@ export default function Questions() {
                 name,
                 age,
                 bio,
-                country
+                country,
+                reviews: [] // Initialize the reviews array
             });
-            router.push('/(tabs)')
+            router.push('/(tabs)');
         } else {
             Alert.alert("Error", "User not authenticated");
         }
