@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Recipe } from './dummyRecipes';
+import { Recipe } from '@/types/types';
 
 interface RecipeCardProps {
     recipe: Recipe;
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     recipeImage: {
         width: "100%",
         height: 140,
+        resizeMode: 'contain',
     },
     recipeInfo: {
         padding: 10,

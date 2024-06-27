@@ -11,7 +11,6 @@
     "test": "jest --watchAll",
     "lint": "expo lint",
     "store-recipes": "ts-node scripts/storeRecipes.ts"
-
   },
   "jest": {
     "preset": "jest-expo"
@@ -22,6 +21,7 @@
     "@firebase/app": "^0.10.5",
     "@firebase/firestore": "^4.6.3",
     "@react-native-async-storage/async-storage": "^1.23.1",
+    "@react-native-firebase/app": "^20.1.0",
     "@react-native-firebase/auth": "^20.1.0",
     "@react-native-firebase/firestore": "^20.1.0",
     "@react-navigation/native": "^6.0.2",

@@ -1,53 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCard from '@/components/RecipeCard';
-import { Recipe, recipes } from '@/components/dummyRecipes';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
-// import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
-
-const categories = [
-  { emoji: '🔥', label: 'Hot' },
-  { emoji: '🍳', label: 'Breakfast' },
-  { emoji: '🍔', label: 'Lunch' },
-  { emoji: '🍝', label: 'Dinner' },
-  { emoji: '🍰', label: 'High Cal' },
-  { emoji: '🥗', label: 'Low Cal' },
-  { emoji: '🍏', label: 'Healthy' },
-  { emoji: '⚡', label: 'Fast' },
-  { emoji: '🍔', label: 'Burgers' },
-  { emoji: '🍕', label: 'Pizza' },
-  { emoji: '🍣', label: 'Sushi' },
-  { emoji: '🌮', label: 'Tacos' },
-  { emoji: '🥞', label: 'Pancakes' },
-  { emoji: '🥙', label: 'Wraps' },
-  { emoji: '🍜', label: 'Noodles' },
-  { emoji: '🥪', label: 'Sandwiches' },
-  { emoji: '🍦', label: 'Desserts' },
-  { emoji: '🍤', label: 'Seafood' },
-  { emoji: '🍲', label: 'Soups' },
-  { emoji: '🥘', label: 'Stews' },
-  { emoji: '🍛', label: 'Curries' },
-  { emoji: '🥓', label: 'Bacon' },
-  { emoji: '🥩', label: 'Steak' },
-  { emoji: '🍿', label: 'Snacks' },
-  { emoji: '🥧', label: 'Pies' },
-  { emoji: '🍗', label: 'Chicken' },
-  { emoji: '🌯', label: 'Burritos' },
-  { emoji: '🥂', label: 'Celebration' },
-  { emoji: '🌱', label: 'Vegan' },
-  { emoji: '🌾', label: 'Gluten-Free' }
-];
-
-
-const r = recipes
+import { categories } from '@/constants/categories';
+import { Recipe } from '@/types/types';
+import { db } from '@/firebaseConfig'; // Correct import for Firestore
+import { collection, getDocs } from 'firebase/firestore';
 
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Hot');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [searchText, setSearchText] = useState('');
+  const [recipes, setRecipes] = useState<Recipe[]>([]); // State to hold recipes
+
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
+
+  const fetchRecipes = async () => {
+    try {
+      const recipeList: Recipe[] = [];
+      const temp = await getDocs(collection(db, 'recipes'));
+      temp.forEach(doc => {
+        recipeList.push({ id: doc.id, ...doc.data() } as Recipe);
+      });
+      setRecipes(recipeList);
+    } catch (error) {
+      console.error('Error fetching recipes: ', error);
+    }
+  };
 
   const handleCategoryPress = (label: string) => {
     setSelectedCategory(label);
@@ -102,7 +86,7 @@ const HomeScreen: React.FC = () => {
       </ScrollView>
       <View>
         <View style={styles.recipesSection}>
-          {r && r.map((recipe, index) => (
+          {recipes && recipes.map((recipe, index) => (
             <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
           ))}
         </View>

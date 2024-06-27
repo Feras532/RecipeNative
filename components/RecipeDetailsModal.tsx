@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
 import { ScrollView } from 'react-native';
-import { Recipe } from './dummyRecipes';
+import { Recipe } from "@/types/types";
 
 interface RecipeDetailsModalProps {
   visible: boolean;
@@ -27,11 +27,7 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalContainer}>
-        <View style={styles.modalImage}>
-          <View>
-          <Image source={{ uri: recipe.imageUrl }} style={styles.modalImage} />
-          </View>
-        </View>
+        <Image source={{ uri: recipe.imageUrl }} style={styles.modalImage} />
         <ScrollView style={styles.modalContent}>
           <View style={styles.modalDetails}>
             <Text style={styles.modalTitle}>{recipe.title}</Text>
@@ -48,7 +44,6 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
                 <Ionicons name='time' size={16} color='#388ce0' />
                 <Text style={styles.detailText}>{recipe.time} min</Text>
               </View>
-
             </View>
             <Text style={styles.modalSectionTitle}>Ingredients:</Text>
             {recipe.ingredients?.map((ingredient, index) => (
@@ -71,7 +66,6 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
                     />
                   </TouchableOpacity>
                 ))}
-
               </View>
             </View>
             <Pressable onPress={onClose} style={styles.closeButton}>
@@ -83,7 +77,6 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
     </Modal>
   );
 };
-
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
@@ -91,7 +84,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff1d0',
   },
   modalImage: {
-    alignItems: 'center',
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
   },
   modalContent: {
     flex: 1,

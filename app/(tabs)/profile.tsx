@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCard from '@/components/RecipeCard';
-import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe, Recipe } from '@/components/dummyRecipes';
+import {Recipe} from "@/types/types"
 import Accordion from 'react-native-collapsible/Accordion';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { auth, db } from '@/firebaseConfig';
@@ -11,23 +11,23 @@ import { doc, getDoc } from "firebase/firestore";
 const SECTIONS = [
   {
     title: '⭐',
-    content: [burgerRecipe],
+    content: [],
   },
   {
     title: '⭐⭐',
-    content: [noodlesRecipe],
+    content: [],
   },
   {
     title: '⭐⭐⭐',
-    content: [saladRecipe],
+    content: [],
   },
   {
     title: '⭐⭐⭐⭐',
-    content: [tacoRecipe],
+    content: [],
   },
   {
     title: '⭐⭐⭐⭐⭐',
-    content: [burgerRecipe, noodlesRecipe, tacoRecipe, burgerRecipe, saladRecipe],
+    content: [],
   },
 ];
 
