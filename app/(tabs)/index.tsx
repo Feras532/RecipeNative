@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCard from '@/components/RecipeCard';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
@@ -7,7 +7,7 @@ import CategorySelection from '@/components/CategorySelection';
 import SearchBar from '@/components/SearchBar';
 import { Recipe } from '@/types/types';
 import { db } from '@/firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Hot');
@@ -18,25 +18,20 @@ const HomeScreen: React.FC = () => {
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
-    fetchRecipes();
+    const unsubscribe = onSnapshot(collection(db, 'recipes'), (snapshot) => {
+      const updatedRecipes: Recipe[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      } as Recipe));
+      setRecipes(updatedRecipes);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     filterRecipes();
   }, [searchText, recipes, selectedCategory]);
-
-  const fetchRecipes = async () => {
-    try {
-      const recipeList: Recipe[] = [];
-      const temp = await getDocs(collection(db, 'recipes'));
-      temp.forEach(doc => {
-        recipeList.push({ id: doc.id, ...doc.data() } as Recipe);
-      });
-      setRecipes(recipeList);
-    } catch (error) {
-      console.error('Error fetching recipes: ', error);
-    }
-  };
 
   const filterRecipes = () => {
     let filtered = recipes;

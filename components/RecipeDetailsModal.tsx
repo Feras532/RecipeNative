@@ -4,7 +4,7 @@ import { Modal, View, Text, StyleSheet, TouchableOpacity, Image, Pressable } fro
 import { ScrollView } from 'react-native';
 import { Recipe } from "@/types/types";
 import { auth, db } from "@/firebaseConfig";
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from "firebase/firestore";
 
 interface RecipeDetailsModalProps {
   visible: boolean;
@@ -14,11 +14,13 @@ interface RecipeDetailsModalProps {
 
 const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe, onClose }) => {
   const [userLiked, setUserLiked] = useState<boolean>(false);
+  const [totalLikes, setTotalLikes] = useState<number>(0);
   const user = auth.currentUser;
 
   useEffect(() => {
     if (recipe && user) {
       fetchUserLikeStatus();
+      listenToRecipeUpdates();
     }
   }, [recipe, user]);
 
@@ -32,14 +34,26 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
     }
   };
 
+  const listenToRecipeUpdates = () => {
+    if (recipe) {
+      const recipeRef = doc(db, "recipes", recipe.id);
+      onSnapshot(recipeRef, (doc) => {
+        const data = doc.data();
+        setTotalLikes(data?.totalLikes || 0);
+      });
+    }
+  };
+
   const handleLike = async () => {
     if (user && recipe) {
       if (userLiked) {
-        await removeLike(recipe.id);
         setUserLiked(false);
+        setTotalLikes((prevLikes) => prevLikes - 1);
+        await removeLike(recipe.id);
       } else {
-        await addLike(recipe.id);
         setUserLiked(true);
+        setTotalLikes((prevLikes) => prevLikes + 1);
+        await addLike(recipe.id);
       }
     }
   };
@@ -54,14 +68,9 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
       likes: arrayUnion({ recipeId })
     });
 
-    const recipeDoc = await getDoc(recipeRef);
-    const recipeData = recipeDoc.data();
-    if (recipeData) {
-      const updatedTotalLikes = (recipeData.totalLikes || 0) + 1;
-      await updateDoc(recipeRef, {
-        totalLikes: updatedTotalLikes
-      });
-    }
+    await updateDoc(recipeRef, {
+      totalLikes: totalLikes + 1
+    });
   };
 
   const removeLike = async (recipeId: string) => {
@@ -72,21 +81,15 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
 
     const userDoc = await getDoc(userRef);
     const userData = userDoc.data();
-
     const existingLike = userData?.likes?.find((like: any) => like.recipeId === recipeId);
     if (existingLike) {
       await updateDoc(userRef, {
         likes: arrayRemove(existingLike)
       });
 
-      const recipeDoc = await getDoc(recipeRef);
-      const recipeData = recipeDoc.data();
-      if (recipeData) {
-        const updatedTotalLikes = (recipeData.totalLikes || 0) - 1;
-        await updateDoc(recipeRef, {
-          totalLikes: updatedTotalLikes
-        });
-      }
+      await updateDoc(recipeRef, {
+        totalLikes: totalLikes - 1
+      });
     }
   };
 
@@ -102,11 +105,11 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
             <View style={styles.ratingAndCalories}>
               <View style={styles.detailItem}>
                 <Ionicons name='heart' size={20} color='#FF4500' />
-                <Text style={styles.detailText}>{recipe.totalLikes > 0 ? `${recipe.totalLikes} Likes ` : "0 Like"}</Text>
+                <Text style={styles.detailText}>{totalLikes > 0 ? `${totalLikes} Likes` : "0 Like"}</Text>
               </View>
               <View style={styles.detailItem}>
                 <Ionicons name='flame' size={20} color='#FF4500' />
-                <Text style={styles.detailText}>{recipe.calories} Kcal </Text>
+                <Text style={styles.detailText}>{recipe.calories} Kcal</Text>
               </View>
               <View style={styles.detailItem}>
                 <Ionicons name='time' size={16} color='#388ce0' />
