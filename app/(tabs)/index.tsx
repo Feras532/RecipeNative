@@ -60,17 +60,17 @@ const HomeScreen: React.FC = () => {
         <Text style={styles.categoryEmoji}>😋</Text>
       </Text>
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#B24B3D" style={styles.searchIcon} />
+        <Ionicons name="search" size={20} color="#000" style={styles.searchIcon} />
         <TextInput
           style={styles.searchBar}
           placeholder="Search recipes..."
-          placeholderTextColor="#B24B3D"
+          placeholderTextColor="#666"
           value={searchText}
           onChangeText={setSearchText}
         />
       </View>
       <Text style={styles.exploreText}>
-        Explore Our Delicious Categories! 🍃
+        Explore Our Delicious Categories! 🍉
       </Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
         {categories && categories.map((category, index) => (

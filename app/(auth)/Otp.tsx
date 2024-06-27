@@ -32,7 +32,7 @@ const Otp = () => {
 
                 if (user.emailVerified) {
                     Alert.alert('Success', '✅ Email verified successfully!');
-                    router.push('/(tabs)');
+                    router.push('/profileMaker');
                 } else {
                     Alert.alert('Error', '❌ Email not verified. Please check your email and try again.');
                 }
