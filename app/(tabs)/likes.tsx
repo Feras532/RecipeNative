@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, Text, Modal } from 'react-native';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { auth, db } from '@/firebaseConfig';
-import { collection, doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import RecipeCard from '@/components/RecipeCard';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { Recipe } from "@/types/types";
@@ -13,10 +13,10 @@ const Likes = () => {
   const user = auth.currentUser;
 
   useEffect(() => {
-    const fetchLikedRecipes = async () => {
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const userDoc = await getDoc(userRef);
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+
+      const unsubscribe = onSnapshot(userRef, async (userDoc) => {
         const userData = userDoc.data();
 
         if (userData?.likes?.length) {
@@ -30,11 +30,13 @@ const Likes = () => {
 
           const likedRecipes = await Promise.all(likedRecipesPromises);
           setLikedRecipes(likedRecipes);
+        } else {
+          setLikedRecipes([]);
         }
-      }
-    };
+      });
 
-    fetchLikedRecipes();
+      return () => unsubscribe();
+    }
   }, [user]);
 
   const handleRecipePress = (recipe: Recipe) => {
@@ -57,12 +59,13 @@ const Likes = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={likedRecipes}
-        renderItem={({ item }) => <RecipeCard recipe={item} onPress={() => handleRecipePress(item)} />}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-      />
+      <ScrollView>
+        <View style={styles.recipesSection}>
+          {likedRecipes.map((recipe, index) => (
+            <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
+          ))}
+        </View>
+      </ScrollView>
       <RecipeDetailsModal visible={modalVisible} recipe={selectedRecipe} onClose={closeModal} />
     </View>
   );
@@ -70,13 +73,15 @@ const Likes = () => {
 
 const styles = StyleSheet.create({
   container: {
+
     flex: 1,
-    backgroundColor: '#fff1d0',
-    padding: 20,
+    padding: 4,
   },
-  list: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  recipesSection: {
+    marginTop: 60,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
   },
   emptyText: {
     fontSize: 18,
