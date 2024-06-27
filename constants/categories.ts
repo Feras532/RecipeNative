@@ -1,4 +1,5 @@
 export const categories = [
+    { emoji: '⏱️', label: 'New' },
     { emoji: '🔥', label: 'Hot' },
     { emoji: '🍳', label: 'Breakfast' },
     { emoji: '🍔', label: 'Lunch' },
@@ -26,7 +27,7 @@ export const categories = [
     { emoji: '🥧', label: 'Pies' },
     { emoji: '🍗', label: 'Chicken' },
     { emoji: '🌯', label: 'Burritos' },
-    { emoji: '🥂', label: 'Celebration' },
+    { emoji: '🥤', label: 'Celebration' },
     { emoji: '🌱', label: 'Vegan' },
     { emoji: '🌾', label: 'Gluten-Free' }
   ];

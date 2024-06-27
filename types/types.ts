@@ -12,6 +12,7 @@ export interface User {
     rating: number; 
     calories: number;
     time: number; // Time in minutes
+    categories: string[];
     ingredients: string[];
     steps: { description: string }[];
     // Optional fieldsS
