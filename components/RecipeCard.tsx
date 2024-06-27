@@ -18,11 +18,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
                 <Text style={styles.recipeTitle}>{recipe.title}</Text>
                 <View style={styles.recipeInfo}>
                     <Text style={styles.recipeRating}>
-                        <Ionicons name='star' size={16} color='#FFD700' />
-                        {' '}{recipe.rating}
+                        <Ionicons name='heart' size={16} color='#FF4500' />
+                        {' '}{recipe.totalLikes > 0 ? recipe.totalLikes : "0"}
                     </Text>
                     <Text style={styles.recipeCalories}>
-                        <Ionicons name='flame' size={16} color='#FF4500' />
+                        <Ionicons name='flame' size={16} color='#ff8800' />
                         {' '}{recipe.calories}
                     </Text>
                     <Text style={styles.recipeTime}>

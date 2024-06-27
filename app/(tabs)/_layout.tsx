@@ -26,18 +26,18 @@ export default function TabLayout() {
           ),
         }}
       />
-        <Tabs.Screen
-          name="stars"
-          options={{
-            title: 'stars',
-            tabBarIcon: ({ focused }) => (
-              <View style={[styles.iconContainer, focused && styles.focusedIconContainer]}>
-                <TabBarIcon name={focused ? 'star' : 'star-outline'} color={focused ? "#B24B3D" : "#888888"} />
-                {focused && <View style={styles.underline} />}
-              </View>
-            ),
-          }}
-        />
+      <Tabs.Screen
+        name="likes"
+        options={{
+          title: 'likes',
+          tabBarIcon: ({ focused }) => (
+            <View style={[styles.iconContainer, focused && styles.focusedIconContainer]}>
+              <TabBarIcon name={focused ? 'heart' : 'heart-outline'} color={focused ? "#B24B3D" : "#888888"} />
+              {focused && <View style={styles.underline} />}
+            </View>
+          ),
+        }}
+      />
       <Tabs.Screen
         name="profile"
         options={{

@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCard from '@/components/RecipeCard';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
-import CategorySelection from '@/components/categorySelection'; 
-import SearchBar from '@/components/SearchBar'; 
+import CategorySelection from '@/components/CategorySelection';
+import SearchBar from '@/components/SearchBar';
 import { Recipe } from '@/types/types';
-import { db } from '@/firebaseConfig'; 
+import { db } from '@/firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
 
 const HomeScreen: React.FC = () => {
@@ -14,8 +14,8 @@ const HomeScreen: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [searchText, setSearchText] = useState('');
-  const [recipes, setRecipes] = useState<Recipe[]>([]); 
-  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]); 
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
     fetchRecipes();

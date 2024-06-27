@@ -13,33 +13,58 @@ interface RecipeDetailsModalProps {
 }
 
 const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe, onClose }) => {
-  const [userRating, setUserRating] = useState<number>(0);
+  const [userLiked, setUserLiked] = useState<boolean>(false);
   const user = auth.currentUser;
 
   useEffect(() => {
     if (recipe && user) {
-      fetchUserRating();
+      fetchUserLikeStatus();
     }
   }, [recipe, user]);
 
-  const fetchUserRating = async () => {
+  const fetchUserLikeStatus = async () => {
     if (user && recipe) {
       const userRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userRef);
       const userData = userDoc.data();
-      const existingReview = userData?.reviews?.find((review: any) => review.recipeId === recipe.id);
-      setUserRating(existingReview?.rating || 0);
+      const existingLike = userData?.likes?.find((like: any) => like.recipeId === recipe.id);
+      setUserLiked(!!existingLike);
     }
   };
 
-  const handleRating = async (rating: number) => {
+  const handleLike = async () => {
     if (user && recipe) {
-      await updateReviewInFirestore(recipe.id, rating);
-      setUserRating(rating);
+      if (userLiked) {
+        await removeLike(recipe.id);
+        setUserLiked(false);
+      } else {
+        await addLike(recipe.id);
+        setUserLiked(true);
+      }
     }
   };
 
-  const updateReviewInFirestore = async (recipeId: string, rating: number) => {
+  const addLike = async (recipeId: string) => {
+    if (!user) return;
+
+    const userRef = doc(db, "users", user.uid);
+    const recipeRef = doc(db, "recipes", recipeId);
+
+    await updateDoc(userRef, {
+      likes: arrayUnion({ recipeId })
+    });
+
+    const recipeDoc = await getDoc(recipeRef);
+    const recipeData = recipeDoc.data();
+    if (recipeData) {
+      const updatedTotalLikes = (recipeData.totalLikes || 0) + 1;
+      await updateDoc(recipeRef, {
+        totalLikes: updatedTotalLikes
+      });
+    }
+  };
+
+  const removeLike = async (recipeId: string) => {
     if (!user) return;
 
     const userRef = doc(db, "users", user.uid);
@@ -48,42 +73,20 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
     const userDoc = await getDoc(userRef);
     const userData = userDoc.data();
 
-    const existingReview = userData?.reviews?.find((review: any) => review.recipeId === recipeId);
-
-    if (existingReview) {
-      // Remove the old review from user
+    const existingLike = userData?.likes?.find((like: any) => like.recipeId === recipeId);
+    if (existingLike) {
       await updateDoc(userRef, {
-        reviews: arrayRemove(existingReview)
+        likes: arrayRemove(existingLike)
       });
 
-      // Update recipe rating
       const recipeDoc = await getDoc(recipeRef);
       const recipeData = recipeDoc.data();
       if (recipeData) {
-        const updatedTotalRates = recipeData.totalRates - 1;
-        const updatedRating = ((recipeData.rating * recipeData.totalRates) - existingReview.rating + rating) / updatedTotalRates;
+        const updatedTotalLikes = (recipeData.totalLikes || 0) - 1;
         await updateDoc(recipeRef, {
-          rating: updatedRating,
-          totalRates: updatedTotalRates
+          totalLikes: updatedTotalLikes
         });
       }
-    }
-
-    // Add the new review
-    await updateDoc(userRef, {
-      reviews: arrayUnion({ recipeId, rating })
-    });
-
-    // Update recipe rating
-    const recipeDoc = await getDoc(recipeRef);
-    const recipeData = recipeDoc.data();
-    if (recipeData) {
-      const updatedTotalRates = recipeData.totalRates + 1;
-      const updatedRating = ((recipeData.rating * recipeData.totalRates) + rating) / updatedTotalRates;
-      await updateDoc(recipeRef, {
-        rating: updatedRating,
-        totalRates: updatedTotalRates
-      });
     }
   };
 
@@ -98,16 +101,16 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
             <Text style={styles.modalTitle}>{recipe.title}</Text>
             <View style={styles.ratingAndCalories}>
               <View style={styles.detailItem}>
-                <Ionicons name="star" size={20} color="#FFD700" />
-                <Text style={styles.detailText}>{recipe.rating}</Text>
+                <Ionicons name='heart' size={20} color='#FF4500' />
+                <Text style={styles.detailText}>{recipe.totalLikes > 0 ? `${recipe.totalLikes} Likes ` : "0 Like"}</Text>
               </View>
               <View style={styles.detailItem}>
-                <Ionicons name="flame" size={20} color="#FF4500" />
-                <Text style={styles.detailText}>{recipe.calories} kcal</Text>
+                <Ionicons name='flame' size={20} color='#FF4500' />
+                <Text style={styles.detailText}>{recipe.calories} Kcal </Text>
               </View>
               <View style={styles.detailItem}>
                 <Ionicons name='time' size={16} color='#388ce0' />
-                <Text style={styles.detailText}>{recipe.time} min</Text>
+                <Text style={styles.detailText}>{recipe.time} Min</Text>
               </View>
             </View>
             <Text style={styles.modalSectionTitle}>Ingredients:</Text>
@@ -118,20 +121,11 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
             {recipe.steps?.map((step, index) => (
               <Text key={index} style={styles.step}>{index + 1}. {step.description}</Text>
             ))}
-            <View style={styles.userRatingSection}>
+            <View style={styles.likeContainer}>
               <Text style={styles.userRatingText}>Did you like the recipe?</Text>
-              <View style={styles.starsContainer}>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <TouchableOpacity key={star} onPress={() => handleRating(star)}>
-                    <Ionicons
-                      name={userRating >= star ? 'star' : 'star-outline'}
-                      size={30}
-                      color="#FFD700"
-                      style={styles.starIcon}
-                    />
-                  </TouchableOpacity>
-                ))}
-              </View>
+              <TouchableOpacity onPress={handleLike} style={styles.likeButton}>
+                <Ionicons name={userLiked ? 'heart' : 'heart-outline'} size={60} color={userLiked ? '#FF4500' : '#888'} />
+              </TouchableOpacity>
             </View>
             <Pressable onPress={onClose} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Close</Text>
@@ -202,7 +196,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   closeButton: {
-    marginTop: 20,
     marginBottom: 20,
     backgroundColor: "#B24B3D",
     paddingVertical: 10,
@@ -224,24 +217,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  userRatingSection: {
-    marginTop: 20,
+  likeContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
+    marginVertical: 20,
+  },
+  likeButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  likeCount: {
+    fontSize: 18,
+    color: '#444',
+    marginLeft: 10,
   },
   userRatingText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 10,
-  },
-  starsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  starIcon: {
-    marginHorizontal: 5,
+    textAlign: 'center',
   },
 });
 

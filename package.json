@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "store-recipes": "ts-node scripts/storeRecipes.ts"
+    "store-recipes": "ts-node scripts/storeRecipes.ts",
+    "update-recipes": "ts-node scripts/updateField.ts"
   },
   "jest": {
     "preset": "jest-expo"
