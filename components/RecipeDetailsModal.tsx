@@ -28,7 +28,9 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalContainer}>
         <View style={styles.modalImage}>
-          <Image source={recipe.imageUrl} style={styles.modalImage} />
+          <View>
+          <Image source={{ uri: recipe.imageUrl }} style={styles.modalImage} />
+          </View>
         </View>
         <ScrollView style={styles.modalContent}>
           <View style={styles.modalDetails}>

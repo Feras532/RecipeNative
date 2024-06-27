@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Animated, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import React from 'react';
+import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Recipe } from './dummyRecipes';
 
@@ -9,22 +9,13 @@ interface RecipeCardProps {
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
-    const translateY = useRef(new Animated.Value(200)).current;
-
-    useEffect(() => {
-        Animated.spring(translateY, {
-            toValue: 0,
-            useNativeDriver: true,
-        }).start();
-    }, [translateY]);
-
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.recipeCard}>
-                <Animated.View style={[styles.imageContainer, { transform: [{ translateY }] }]}>
-                    <Animated.Image source={recipe.imageUrl} style={styles.recipeImage} />
-                </Animated.View>
-                    <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                <View style={styles.imageContainer}>
+                    <Image source={{ uri: recipe.imageUrl }} style={styles.recipeImage} />
+                </View>
+                <Text style={styles.recipeTitle}>{recipe.title}</Text>
                 <View style={styles.recipeInfo}>
                     <Text style={styles.recipeRating}>
                         <Ionicons name='star' size={16} color='#FFD700' />
@@ -34,7 +25,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
                         <Ionicons name='flame' size={16} color='#FF4500' />
                         {' '}{recipe.calories}
                     </Text>
-                    <Text style={styles.recipeCalories}>
+                    <Text style={styles.recipeTime}>
                         <Ionicons name='time' size={16} color='#388ce0' />
                         {' '}{recipe.time}
                     </Text>
@@ -87,7 +78,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         justifyContent: 'center',
         alignItems: 'center',
-
         color: '#888',
     },
     recipeTime: {

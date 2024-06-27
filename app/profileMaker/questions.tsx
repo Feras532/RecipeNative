@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-
+import { auth, db } from '@/firebaseConfig'; // Import your Firebase configuration
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { User as FirebaseUser } from "firebase/auth";
+import { router } from 'expo-router';
 export default function Questions() {
     const [step, setStep] = useState(0);
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const [bio, setBio] = useState('');
     const [country, setCountry] = useState('');
+    const [user, setUser] = useState<FirebaseUser | null>(null); // Use Firebase User type
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    setName(userData?.name || '');
+                    setAge(userData?.age || '');
+                    setBio(userData?.bio || '');
+                    setCountry(userData?.country || '');
+                }
+                setUser(currentUser);
+            }
+        };
+        fetchUser();
+    }, []);
 
     const steps = [
         { question: 'What is your name?', value: name, setValue: setName },
@@ -22,8 +44,18 @@ export default function Questions() {
         }
     };
 
-    const handleSubmit = () => {
-        Alert.alert("Profile Submitted", `Name: ${name}\nCountry: ${country}\nAge: ${age}\nBio: ${bio}`);
+    const handleSubmit = async () => {
+        if (user) {
+            await setDoc(doc(db, "users", user.uid), {
+                name,
+                age,
+                bio,
+                country
+            });
+            router.push('/(tabs)')
+        } else {
+            Alert.alert("Error", "User not authenticated");
+        }
     };
 
     return (

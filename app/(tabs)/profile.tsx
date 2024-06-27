@@ -1,17 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, Text, View, ScrollView } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCard from '@/components/RecipeCard';
 import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe, Recipe } from '@/components/dummyRecipes';
 import Accordion from 'react-native-collapsible/Accordion';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
-
-const dummyProfileData = {
-  name: 'Feras Alferas',
-  email: 'Feras.Alsinan@lazywait.com',
-  bio: 'Food enthusiast with a knack for discovering and sharing delicious recipes.',
-  location: 'Qatif, Saudi Arabia',
-};
+import { auth, db } from '@/firebaseConfig';
+import { doc, getDoc } from "firebase/firestore";
 
 const SECTIONS = [
   {
@@ -40,6 +35,21 @@ export default function Profile() {
   const [activeSections, setActiveSections] = useState<number[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [profileData, setProfileData] = useState<any>({ name: '', age: '', bio: '', country: '' });
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+        if (userDoc.exists()) {
+          setProfileData(userDoc.data());
+        }
+      }
+    };
+
+    fetchProfileData();
+  }, []);
 
   const handleRecipePress = (recipe: Recipe) => {
     setSelectedRecipe(recipe);
@@ -74,10 +84,10 @@ export default function Profile() {
       <ScrollView contentContainerStyle={styles.container}>
         {/* USER DETAILS */}
         <Image source={require('../../assets/images/man.png')} style={styles.profileImage} />
-        <Text style={styles.name}>{dummyProfileData.name}</Text>
-        <Text style={styles.email}>{dummyProfileData.email}</Text>
-        <Text style={styles.bio}>{dummyProfileData.bio}</Text>
-        <Text style={styles.location}>{dummyProfileData.location}</Text>
+        <Text style={styles.name}>{profileData.name}</Text>
+        <Text style={styles.age}>{profileData.age}</Text>
+        <Text style={styles.bio}>{profileData.bio}</Text>
+        <Text style={styles.location}>{profileData.country}</Text>
 
         {/* USER RATINGS */}
         <View style={styles.section}>
@@ -118,7 +128,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
-  email: {
+  age: {
     fontSize: 16,
     color: '#555',
   },
