@@ -1,16 +1,3 @@
-export interface Recipe {
-  imageUrl: string; 
-  title: string;
-  rating: number; 
-  calories: number;
-  time: number; // Time in minutes
-  ingredients: string[];
-  steps: { description: string }[];
-  // Optional fieldsS
-  cuisineType?: string; 
-  author?: string;
-}
-
 export const recipes = [
   {
     imageUrl: "",

@@ -36,7 +36,6 @@ export default function Profile() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [profileData, setProfileData] = useState<any>({ name: '', age: '', bio: '', country: '' });
-
   useEffect(() => {
     const fetchProfileData = async () => {
       const currentUser = auth.currentUser;
@@ -47,7 +46,6 @@ export default function Profile() {
         }
       }
     };
-
     fetchProfileData();
   }, []);
 

@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCard from '@/components/RecipeCard';
-import { Recipe } from '@/components/dummyRecipes';
+import { Recipe, recipes } from '@/components/dummyRecipes';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
-import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
+// import { burgerRecipe, noodlesRecipe, saladRecipe, tacoRecipe } from '@/components/dummyRecipes';
 
 const categories = [
   { emoji: '🔥', label: 'Hot' },
@@ -16,21 +16,32 @@ const categories = [
   { emoji: '🥗', label: 'Low Cal' },
   { emoji: '🍏', label: 'Healthy' },
   { emoji: '⚡', label: 'Fast' },
+  { emoji: '🍔', label: 'Burgers' },
+  { emoji: '🍕', label: 'Pizza' },
+  { emoji: '🍣', label: 'Sushi' },
+  { emoji: '🌮', label: 'Tacos' },
+  { emoji: '🥞', label: 'Pancakes' },
+  { emoji: '🥙', label: 'Wraps' },
+  { emoji: '🍜', label: 'Noodles' },
+  { emoji: '🥪', label: 'Sandwiches' },
+  { emoji: '🍦', label: 'Desserts' },
+  { emoji: '🍤', label: 'Seafood' },
+  { emoji: '🍲', label: 'Soups' },
+  { emoji: '🥘', label: 'Stews' },
+  { emoji: '🍛', label: 'Curries' },
+  { emoji: '🥓', label: 'Bacon' },
+  { emoji: '🥩', label: 'Steak' },
+  { emoji: '🍿', label: 'Snacks' },
+  { emoji: '🥧', label: 'Pies' },
+  { emoji: '🍗', label: 'Chicken' },
+  { emoji: '🌯', label: 'Burritos' },
+  { emoji: '🥂', label: 'Celebration' },
+  { emoji: '🌱', label: 'Vegan' },
+  { emoji: '🌾', label: 'Gluten-Free' }
 ];
 
-const recipes = [
-  burgerRecipe,
-  noodlesRecipe,
-  saladRecipe,
-  tacoRecipe,
-  burgerRecipe,
-  tacoRecipe,
-  burgerRecipe,
-  burgerRecipe,
-  saladRecipe,
-  burgerRecipe,
-  burgerRecipe,
-];
+
+const r = recipes
 
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>('Hot');
@@ -91,7 +102,7 @@ const HomeScreen: React.FC = () => {
       </ScrollView>
       <View>
         <View style={styles.recipesSection}>
-          {recipes && recipes.map((recipe, index) => (
+          {r && r.map((recipe, index) => (
             <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
           ))}
         </View>
