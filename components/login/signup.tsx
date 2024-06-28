@@ -21,21 +21,34 @@ export default function Signup() {
 
         try {
             const auth = getAuth(app);
+            console.log('Checking email:', email);
             const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+            console.log('Sign-in methods:', signInMethods);
 
             if (signInMethods.length > 0) {
                 Alert.alert('Error', 'Email already in use');
                 return;
             }
 
+            console.log('Creating user with email:', email);
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-
+            console.log('Sending email verification to:', user.email);
             await sendEmailVerification(user);
-            Alert.alert('Success', 'Verification email sent! Please check your email.');
+            console.log('email sent to:', user.email);
             router.push({ pathname: '/(auth)/Otp', params: { email } });
-        } catch (error) {
-            Alert.alert('Error', 'An error occurred. Please try again.');
+        } catch (error: any) {
+            let errorMessage = 'An error occurred. Please try again.';
+            if (error.code === 'auth/email-already-in-use') {
+                errorMessage = 'The email address is already in use by another account.';
+            } else if (error.code === 'auth/invalid-email') {
+                errorMessage = 'The email address is not valid.';
+            } else if (error.code === 'auth/operation-not-allowed') {
+                errorMessage = 'Email/password accounts are not enabled.';
+            } else if (error.code === 'auth/weak-password') {
+                errorMessage = 'The password is too weak.';
+            }
+            Alert.alert('Error', errorMessage);
         }
     };
 

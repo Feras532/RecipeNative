@@ -1,6 +1,6 @@
 import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import { app } from "@/firebaseConfig";
@@ -9,6 +9,7 @@ const Otp = () => {
     const [timer, setTimer] = useState(30);
     const [canResend, setCanResend] = useState(false);
     const router = useRouter();
+    const { email } = useLocalSearchParams();
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -68,6 +69,7 @@ const Otp = () => {
                 style={styles.animation}
             />
             <Text style={styles.instructionText}>Please check your email to verify your account.</Text>
+            <Text style={({color: "#000"})}>{email}</Text>
 
             <Pressable style={styles.submitButton} onPress={verifyEmail}>
                 <Text style={styles.submitButtonText}>Proceed</Text>
@@ -99,7 +101,6 @@ const styles = StyleSheet.create({
     instructionText: {
         fontSize: 16,
         textAlign: 'center',
-        marginVertical: 20,
         color: '#666',
     },
     submitButton: {
