@@ -1,21 +1,54 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "@/firebaseConfig";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
     const passwordInputRef = useRef<TextInput>(null);
     const router = useRouter();
+
+    useEffect(() => {
+        // Load saved login details if remember me was selected
+        const loadLoginDetails = async () => {
+            try {
+                const savedEmail = await AsyncStorage.getItem('email');
+                const savedPassword = await AsyncStorage.getItem('password');
+                const remember = await AsyncStorage.getItem('rememberMe');
+
+                if (savedEmail && savedPassword && remember === 'true') {
+                    setEmail(savedEmail);
+                    setPassword(savedPassword);
+                    setRememberMe(true);
+                }
+            } catch (error) {
+                console.log('Error loading login details:', error);
+            }
+        };
+
+        loadLoginDetails();
+    }, []);
 
     const handleLogin = async () => {
         try {
             const auth = getAuth(app);
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
+
+            if (rememberMe) {
+                await AsyncStorage.setItem('email', email);
+                await AsyncStorage.setItem('password', password);
+                await AsyncStorage.setItem('rememberMe', 'true');
+            } else {
+                await AsyncStorage.removeItem('email');
+                await AsyncStorage.removeItem('password');
+                await AsyncStorage.setItem('rememberMe', 'false');
+            }
 
             await user.reload();
             if (!user.emailVerified) {
@@ -61,6 +94,12 @@ export default function Login() {
                 returnKeyType="done"
                 onSubmitEditing={handleLogin}
             />
+            <View style={styles.rememberMeContainer}>
+                <Pressable onPress={() => setRememberMe(!rememberMe)} style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                    {rememberMe && <Ionicons name="checkmark" style={styles.checkboxIcon} />}
+                </Pressable>
+                <Text style={styles.rememberMeText}>Remember Me</Text>
+            </View>
             <Pressable style={styles.submitButton} onPress={handleLogin}>
                 <Text style={styles.submitButtonText}>Submit</Text>
             </Pressable>
@@ -95,6 +134,32 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ddd',
         elevation: 2,
+    },
+    rememberMeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 10,
+    },
+    checkbox: {
+        width: 24,
+        height: 24,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+        borderRadius: 4,
+    },
+    checkboxChecked: {
+        backgroundColor: '#ff6347',
+        borderColor: '#B24B3D',
+    },
+    checkboxIcon: {
+        color: '#fff',
+        fontSize: 18,
+    },
+    rememberMeText: {
+        fontSize: 16,
     },
     submitButton: {
         backgroundColor: '#B24B3D',

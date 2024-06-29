@@ -29,11 +29,11 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false , navigationBarHidden:true}} />
-        <Stack.Screen name="(auth)/Otp" options={{ headerShown: false, navigationBarHidden:true }} />
-        <Stack.Screen name="profileMaker/profileMaker" options={{ headerShown: false, navigationBarHidden:true }} />
-        <Stack.Screen name="profileMaker/questions" options={{ headerShown: false, navigationBarHidden:true }} />
-        <Stack.Screen name="index" options={{ headerShown: false , navigationBarHidden:true}} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false, navigationBarHidden: true }} />
+        <Stack.Screen name="(auth)/Otp" options={{ headerShown: false, navigationBarHidden: true }} />
+        <Stack.Screen name="profileMaker/profileMaker" options={{ headerShown: false, navigationBarHidden: true }} />
+        <Stack.Screen name="profileMaker/questions" options={{ headerShown: false, navigationBarHidden: true }} />
+        <Stack.Screen name="index" options={{ headerShown: false, navigationBarHidden: true }} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>

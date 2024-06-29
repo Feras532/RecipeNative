@@ -12,7 +12,7 @@ export default function Index() {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <AnimatedCoverImage />
             <View style={styles.containerLoginSignup}>
                 <View style={styles.loginSignup}>
@@ -31,17 +31,16 @@ export default function Index() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        height: '100%',
-        width: '100%',
+        flexGrow: 1,
+        justifyContent: 'flex-start',
+        backgroundColor: '#f0f0f0', // Adjust the background color as needed
     },
     containerLoginSignup: {
         backgroundColor: '#fff',
-        height: "100%",
         borderRadius: 30,
-        marginRight: 5,
-        marginLeft: 5,
+        marginHorizontal: 5,
         elevation: 10,
+        flexGrow: 1,
     },
     loginSignup: {
         flexDirection: 'row',
@@ -55,6 +54,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
+        backgroundColor: '#fafafa',
     },
     activeButton: {
         backgroundColor: '#B24B3D',
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
     },
     activeBtnText: {
-        color: '#ffff',
+        color: '#fff',
         fontWeight: 'bold',
     },
 });
