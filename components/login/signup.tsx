@@ -4,11 +4,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail } from "firebase/auth";
 import { app } from "@/firebaseConfig";
+import SubmitButton from '@/components/ui/SubmitButton';
 
 export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const passwordInputRef = useRef<TextInput>(null);
     const confirmPasswordInputRef = useRef<TextInput>(null);
     const router = useRouter();
@@ -18,7 +20,7 @@ export default function Signup() {
             Alert.alert('Error', 'Passwords do not match');
             return;
         }
-
+        setLoading(true);
         try {
             const auth = getAuth(app);
             console.log('Checking email:', email);
@@ -35,7 +37,7 @@ export default function Signup() {
             const user = userCredential.user;
             console.log('Sending email verification to:', user.email);
             await sendEmailVerification(user);
-            console.log('email sent to:', user.email);
+            console.log('Email sent to:', user.email);
             router.push({ pathname: '/(auth)/Otp', params: { email } });
         } catch (error: any) {
             let errorMessage = 'An error occurred. Please try again.';
@@ -49,6 +51,8 @@ export default function Signup() {
                 errorMessage = 'The password is too weak.';
             }
             Alert.alert('Error', errorMessage);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -98,11 +102,7 @@ export default function Signup() {
                 returnKeyType="done"
                 onSubmitEditing={handleSignup}
             />
-            <Pressable onPress={handleSignup}>
-                <View style={styles.submitButton}>
-                    <Text style={styles.submitButtonText}>Submit</Text>
-                </View>
-            </Pressable>
+            <SubmitButton onPress={handleSignup} loading={loading} buttonText="Submit" />
         </View>
     );
 }
@@ -134,21 +134,5 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ddd',
         elevation: 2,
-    },
-    submitButton: {
-        backgroundColor: '#B24B3D',
-        borderRadius: 10,
-        padding: 15,
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-        elevation: 2,
-    },
-    submitButtonText: {
-        textAlign: 'center',
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
     },
 });

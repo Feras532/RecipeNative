@@ -1,20 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, Alert, ActivityIndicator } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "@/firebaseConfig";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SubmitButton from '@/components/ui/SubmitButton';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
+    const [loading, setLoading] = useState(false);
     const passwordInputRef = useRef<TextInput>(null);
     const router = useRouter();
 
     useEffect(() => {
-        // Load saved login details if remember me was selected
+        // display the user details, if he selected Remember Me before ;)
         const loadLoginDetails = async () => {
             try {
                 const savedEmail = await AsyncStorage.getItem('email');
@@ -35,6 +37,7 @@ export default function Login() {
     }, []);
 
     const handleLogin = async () => {
+        setLoading(true);
         try {
             const auth = getAuth(app);
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -60,6 +63,8 @@ export default function Login() {
         } catch (error) {
             Alert.alert('Error', 'Invalid email or password. Please try again.');
             console.log("Error logging in:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -100,9 +105,7 @@ export default function Login() {
                 </Pressable>
                 <Text style={styles.rememberMeText}>Remember Me</Text>
             </View>
-            <Pressable style={styles.submitButton} onPress={handleLogin}>
-                <Text style={styles.submitButtonText}>Submit</Text>
-            </Pressable>
+            <SubmitButton onPress={handleLogin} loading={loading} buttonText="Submit" />
         </View>
     );
 }
@@ -160,20 +163,5 @@ const styles = StyleSheet.create({
     },
     rememberMeText: {
         fontSize: 16,
-    },
-    submitButton: {
-        backgroundColor: '#B24B3D',
-        borderRadius: 10,
-        padding: 15,
-        textAlign: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
-        elevation: 2,
-    },
-    submitButtonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
     },
 });
