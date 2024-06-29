@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { auth, db } from '@/firebaseConfig';
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import RecipeCard from '@/components/RecipeCard';
@@ -10,6 +10,7 @@ const Likes = () => {
   const [likedRecipes, setLikedRecipes] = useState<Recipe[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [loading, setLoading] = useState(true);
   const user = auth.currentUser;
 
   useEffect(() => {
@@ -33,9 +34,12 @@ const Likes = () => {
         } else {
           setLikedRecipes([]);
         }
+        setLoading(false);
       });
 
       return () => unsubscribe();
+    } else {
+      setLoading(false);
     }
   }, [user]);
 
@@ -49,16 +53,27 @@ const Likes = () => {
     setSelectedRecipe(null);
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#B24B3D" />
+        <Text style={styles.loadingText}>Loading your liked recipes...</Text>
+      </View>
+    );
+  }
+
   if (!likedRecipes.length) {
     return (
       <View style={styles.container}>
-        <Text style={styles.emptyText}>No liked recipes yet</Text>
+        <Text style={styles.emptyText}>No liked recipes yet 😔</Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
+      <Text style={styles.headerText}>Your Liked Recipes ❤️</Text>
+      <Text style={styles.totalLikesText}>Total Likes: {likedRecipes.length}</Text>
       <ScrollView>
         <View style={styles.recipesSection}>
           {likedRecipes.map((recipe, index) => (
@@ -73,12 +88,12 @@ const Likes = () => {
 
 const styles = StyleSheet.create({
   container: {
-
+    marginTop: 20,
     flex: 1,
-    padding: 4,
+    padding: 10,
   },
   recipesSection: {
-    marginTop: 60,
+    marginTop: 20,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
@@ -88,6 +103,29 @@ const styles = StyleSheet.create({
     color: '#888',
     textAlign: 'center',
     marginTop: 20,
+  },
+  headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  totalLikesText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#888',
+    marginBottom: 10,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 18,
+    color: '#888',
   },
 });
 
