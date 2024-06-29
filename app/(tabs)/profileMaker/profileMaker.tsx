@@ -19,7 +19,7 @@ export default function ProfileMaker() {
                 style={styles.animation}
             />
             <Pressable style={styles.submitButton}>
-                <Link href={'profileMaker/questions'}>
+                <Link href={'/profileMaker/questions'}>
                     <Text style={styles.submitButtonText}>Cook my profile</Text>
                 </Link>
             </Pressable>
@@ -46,12 +46,12 @@ const styles = StyleSheet.create({
         color: '#777',
         fontWeight: '600',
     },
-    appName:{
+    appName: {
         fontSize: 38,
         textAlign: 'center',
         color: '#444',
         fontWeight: '600',
-    
+
     },
     inputContainer: {
         width: '90%',

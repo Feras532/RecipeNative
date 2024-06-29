@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import { auth, db } from '@/firebaseConfig'; // Import your Firebase configuration
+import { auth, db } from '@/firebaseConfig';
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { User as FirebaseUser } from "firebase/auth";
 import { router } from 'expo-router';
+
 export default function Questions() {
     const [step, setStep] = useState(0);
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const [bio, setBio] = useState('');
     const [country, setCountry] = useState('');
-    const [user, setUser] = useState<FirebaseUser | null>(null); // Use Firebase User type
+    const [user, setUser] = useState<FirebaseUser | null>(null);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -32,10 +33,10 @@ export default function Questions() {
     }, []);
 
     const steps = [
-        { question: 'What is your name?', value: name, setValue: setName },
-        { question: 'Which country are you from?', value: country, setValue: setCountry },
-        { question: 'What is your age?', value: age, setValue: setAge },
-        { question: 'Tell us about yourself', value: bio, setValue: setBio },
+        { question: 'What is your name?', value: name, setValue: setName, image: require('@/assets/images/profileMaker/NAME.png') },
+        { question: 'Which country are you from?', value: country, setValue: setCountry, image: require('@/assets/images/profileMaker/COUNTRY.png') },
+        { question: 'What is your age?', value: age, setValue: setAge, image: require('@/assets/images/profileMaker/AGE.png') },
+        { question: 'Tell us about yourself', value: bio, setValue: setBio, image: require('@/assets/images/profileMaker/BIO.png') },
     ];
 
     const handleNext = () => {
@@ -51,7 +52,6 @@ export default function Questions() {
                 age,
                 bio,
                 country,
-                reviews: [] // Initialize the reviews array
             });
             router.push('/(tabs)');
         } else {
@@ -67,6 +67,9 @@ export default function Questions() {
                 duration={500}
                 style={styles.inputContainer}
             >
+                <View style={styles.imageContainer}>
+                    <Image source={steps[step].image} style={styles.image} />
+                </View>
                 <Text style={styles.questionText}>{steps[step].question}</Text>
                 <TextInput
                     style={styles.input}
@@ -82,7 +85,7 @@ export default function Questions() {
                     </TouchableOpacity>
                 ) : (
                     <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-                        <Text style={styles.buttonText}>Submit</Text>
+                        <Text style={styles.buttonText}>Save</Text>
                     </TouchableOpacity>
                 )}
             </Animatable.View>
@@ -92,22 +95,30 @@ export default function Questions() {
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 20,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
+        backgroundColor: '#f9fafc',
     },
     inputContainer: {
-        width: '90%',
+        width: '100%',
         alignItems: 'center',
-        backgroundColor: '#ffffff',
         padding: 30,
-        borderRadius: 15,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
-        elevation: 8,
+    },
+    imageContainer: {
+        width: 350,
+        height: 350,
+        borderRadius: 350,
+        backgroundColor: '#AAAAAA',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    image: {
+        width: 350,
+        height: 350,
     },
     questionText: {
         fontSize: 24,
@@ -122,17 +133,17 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ddd',
         borderRadius: 10,
-        marginBottom: 25,
+        marginBottom: 20,
         fontSize: 18,
         textAlign: 'center',
         backgroundColor: '#f1f1f1',
     },
     button: {
+        width: '100%',
         backgroundColor: '#B24B3D',
         paddingVertical: 15,
         paddingHorizontal: 30,
         borderRadius: 10,
-        width: 150,
     },
     buttonText: {
         color: '#ffffff',
