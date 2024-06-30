@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
+import { View, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Recipe } from '@/types/types';
-
+import CustomText from './ui/CustomText';
 interface RecipeCardRowProps {
     recipes: Recipe[];
     onPress: (recipe: Recipe) => void;
@@ -21,12 +21,12 @@ const RecipeCardRow: React.FC<RecipeCardRowProps> = ({ recipes, onPress }) => {
                             <Image source={{ uri: recipe.imageUrl }} style={styles.recipeImage} />
                         </View>
                         <View style={styles.details}>
-                            <Text style={styles.recipeTitle}>{recipe.title}</Text>
-                            <Text style={styles.authorText}>👨‍🍳 {recipe.author}</Text>
+                            <CustomText style={styles.recipeTitle}>{recipe.title}</CustomText>
+                            <CustomText style={styles.authorText}>👨‍🍳 {recipe.author}</CustomText>
                             <View style={styles.recipeInfo}>
                                 <View style={styles.infoContainer}>
                                     <Ionicons name='heart' size={30} color='#c25648' />
-                                    <Text style={styles.recipeRating}>{recipe.totalLikes > 0 ? recipe.totalLikes : "0"} Likes </Text>
+                                    <CustomText style={styles.recipeRating}>{recipe.totalLikes > 0 ? recipe.totalLikes : "0"} Likes </CustomText>
                                 </View>
                             </View>
                         </View>
@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
     },
     recipeTitle: {
         fontSize: 20,
-        fontWeight: 'bold',
         color: '#fff',
     },
     authorText: {

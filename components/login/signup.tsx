@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
+import { View, TextInput, StyleSheet, Pressable, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, fetchSignInMethodsForEmail } from "firebase/auth";
 import { app } from "@/firebaseConfig";
 import SubmitButton from '@/components/ui/SubmitButton';
-
+import CustomText from '../ui/CustomText';
 export default function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -60,7 +60,7 @@ export default function Signup() {
         <View style={styles.formContainer}>
             <View style={styles.inputWrapper}>
                 <Ionicons name='mail' style={styles.icon} />
-                <Text style={styles.label}>Email</Text>
+                <CustomText style={styles.label}>Email</CustomText>
             </View>
             <TextInput
                 style={styles.input}
@@ -74,7 +74,7 @@ export default function Signup() {
             />
             <View style={styles.inputWrapper}>
                 <Ionicons name='key' style={styles.icon} />
-                <Text style={styles.label}>Password</Text>
+                <CustomText style={styles.label}>Password</CustomText>
             </View>
             <TextInput
                 style={styles.input}
@@ -89,7 +89,7 @@ export default function Signup() {
             />
             <View style={styles.inputWrapper}>
                 <Ionicons name='key' style={styles.icon} />
-                <Text style={styles.label}>Confirm Password</Text>
+                <CustomText style={styles.label}>Confirm Password</CustomText>
             </View>
             <TextInput
                 style={styles.input}

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, ScrollView, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { auth, db } from '@/firebaseConfig';
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import RecipeCard from '@/components/RecipeCard';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { Recipe } from "@/types/types";
-
+import CustomText from '@/components/ui/CustomText';
 const Likes = () => {
   const [likedRecipes, setLikedRecipes] = useState<Recipe[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -57,7 +57,7 @@ const Likes = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#B24B3D" />
-        <Text style={styles.loadingText}>Loading your liked recipes...</Text>
+        <CustomText style={styles.loadingText}>Loading your liked recipes...</CustomText>
       </View>
     );
   }
@@ -65,15 +65,15 @@ const Likes = () => {
   if (!likedRecipes.length) {
     return (
       <View style={styles.container}>
-        <Text style={styles.emptyText}>No liked recipes yet 😔</Text>
+        <CustomText style={styles.emptyText}>No liked recipes yet 😔</CustomText>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Your Liked Recipes ❤️</Text>
-      <Text style={styles.totalLikesText}>Total Likes: {likedRecipes.length}</Text>
+      <CustomText style={styles.headerText}>Your Liked Recipes ❤️</CustomText>
+      <CustomText style={styles.totalLikesText}>Total Likes: {likedRecipes.length}</CustomText>
       <ScrollView>
         <View style={styles.recipesSection}>
           {likedRecipes.map((recipe, index) => (
@@ -106,13 +106,11 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 24,
-    fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 10,
   },
   totalLikesText: {
     fontSize: 20,
-    fontWeight: 'bold',
     textAlign: 'center',
     color: '#888',
     marginBottom: 10,

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, Share, Linking, Platform } from 'react-native';
+import { Image, StyleSheet, View, ScrollView, TouchableOpacity, Pressable, Share, Linking, Platform } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { Ionicons } from '@expo/vector-icons';
 import { auth, db } from '@/firebaseConfig';
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from 'expo-router';
-
+import CustomText from '@/components/ui/CustomText';
 export default function Profile() {
   const [profileData, setProfileData] = useState<any>({ name: '', email: '', age: '', bio: '', country: '' });
 
@@ -58,31 +58,31 @@ export default function Profile() {
             <Ionicons name="pencil-outline" size={25} color="#fff" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.name}>{profileData.name}</Text>
-        <Text style={styles.email}>{currentUser?.email}</Text>
+        <CustomText style={styles.name}>{profileData.name}</CustomText>
+        <CustomText style={styles.email}>{currentUser?.email}</CustomText>
         <View style={styles.infoContainer}>
           <Ionicons name="person-outline" size={24} color="#666" style={styles.infoIcon} />
-          <Text style={styles.infoValue}>{profileData.age} years</Text>
+          <CustomText style={styles.infoValue}>{profileData.age} years</CustomText>
         </View>
         <View style={styles.infoContainer}>
           <Ionicons name="location-outline" size={24} color="#666" style={styles.infoIcon} />
-          <Text style={styles.infoValue}>{profileData.country}</Text>
+          <CustomText style={styles.infoValue}>{profileData.country}</CustomText>
         </View>
         <View style={styles.infoContainer}>
           <Ionicons name="information-circle-outline" size={24} color="#666" style={styles.infoIcon} />
-          <Text style={styles.infoValue}>{profileData.bio}</Text>
+          <CustomText style={styles.infoValue}>{profileData.bio}</CustomText>
         </View>
         <Pressable onPress={handleInviteFriend} style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
           <Ionicons name="person-add-outline" size={24} color="#666" style={styles.infoIcon} />
-          <Text style={styles.infoValue}>Invite a Friend</Text>
+          <CustomText style={styles.infoValue}>Invite a Friend</CustomText>
         </Pressable>
         <Pressable onPress={handleRateApp} style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
           <Ionicons name="star-outline" size={24} color="#666" style={styles.infoIcon} />
-          <Text style={styles.infoValue}>Rate the Application</Text>
+          <CustomText style={styles.infoValue}>Rate the Application</CustomText>
         </Pressable>
         <TouchableOpacity onPress={handleLogOut} style={styles.logoutButton}>
           <Ionicons name="log-out-outline" size={24} color="#fff" />
-          <Text style={styles.logoutButtonText}>Logout</Text>
+          <CustomText style={styles.logoutButtonText}>Logout</CustomText>
         </TouchableOpacity>
       </ScrollView>
     </ParallaxScrollView>
@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 26,
-    fontWeight: 'bold',
     color: '#333',
     marginVertical: 10,
   },
@@ -169,7 +168,6 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: 'bold',
     marginLeft: 10,
   },
 });

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, Pressable } from 'react-native';
+import { View, TextInput, Button, TouchableOpacity, Pressable } from 'react-native';
 import LottieView from 'lottie-react-native';
 import * as Animatable from 'react-native-animatable';
 import { StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
-
+import CustomText from '@/components/ui/CustomText';
 export default function ProfileMaker() {
 
 
     return (
         <View style={styles.container}>
-            <Text style={styles.instructionText}>Hey welcome to </Text>
-            <Text style={styles.appName}>RecipeNative </Text>
+            <CustomText style={styles.instructionText}>Hey welcome to </CustomText>
+            <CustomText style={styles.appName}>RecipeNative </CustomText>
             <LottieView
                 source={require('@/assets/animations/cooking.json')}
                 autoPlay
@@ -20,7 +20,7 @@ export default function ProfileMaker() {
             />
             <Pressable style={styles.submitButton}>
                 <Link href={'/profileMaker/questions'}>
-                    <Text style={styles.submitButtonText}>Cook my profile</Text>
+                    <CustomText style={styles.submitButtonText}>Cook my profile</CustomText>
                 </Link>
             </Pressable>
         </View>
@@ -108,6 +108,5 @@ const styles = StyleSheet.create({
     submitButtonText: {
         color: '#fff',
         fontSize: 18,
-        fontWeight: 'bold',
     },
 });

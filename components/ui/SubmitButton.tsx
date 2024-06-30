@@ -1,6 +1,6 @@
 import React from 'react';
-import { Pressable, Text, StyleSheet, ActivityIndicator, View } from 'react-native';
-
+import { Pressable, StyleSheet, ActivityIndicator, View } from 'react-native';
+import CustomText from './CustomText';
 interface SubmitButtonProps {
     onPress: () => void;
     loading: boolean;
@@ -13,7 +13,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, loading, buttonTex
             {loading ? (
                 <ActivityIndicator size="small" color="#fff" />
             ) : (
-                <Text style={styles.submitButtonText}>{buttonText}</Text>
+                <CustomText style={styles.submitButtonText}>{buttonText}</CustomText>
             )}
         </Pressable>
     );
@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
         elevation: 3,
+        marginTop: 5,
+        width: '100%'
     },
     submitButtonText: {
         color: '#fff',
         fontSize: 18,
-        fontWeight: 'bold',
     },
 });
 

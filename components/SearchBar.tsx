@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: "#B24B3D",
     backgroundColor: '#fff',
+    fontFamily: 'kanit-Regular'
   },
   iconWrapper: {
     width: 35,

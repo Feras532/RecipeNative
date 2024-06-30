@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { categories } from '@/constants/categories';
-
+import CustomText from './ui/CustomText';
 interface CategorySelectionProps {
   selectedCategory: string | null;
   onCategoryPress: (label: string) => void;
@@ -19,8 +19,8 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({ selectedCategory,
           ]}
           onPress={() => onCategoryPress(category.label)}
         >
-          <Text style={styles.categoryEmoji}>{category.emoji}</Text>
-          <Text style={styles.categoryLabel}>{category.label}</Text>
+          <CustomText style={styles.categoryEmoji}>{category.emoji}</CustomText>
+          <CustomText style={styles.categoryLabel}>{category.label}</CustomText>
         </TouchableOpacity>
       ))}
     </ScrollView>

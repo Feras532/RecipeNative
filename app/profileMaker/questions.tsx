@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { auth, db } from '@/firebaseConfig';
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { User as FirebaseUser } from "firebase/auth";
 import { router } from 'expo-router';
+import CustomText from '@/components/ui/CustomText';
+import SubmitButton from '@/components/ui/SubmitButton';
 
 export default function Questions() {
     const [step, setStep] = useState(0);
@@ -13,6 +15,7 @@ export default function Questions() {
     const [bio, setBio] = useState('');
     const [country, setCountry] = useState('');
     const [user, setUser] = useState<FirebaseUser | null>(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -47,6 +50,7 @@ export default function Questions() {
 
     const handleSubmit = async () => {
         if (user) {
+            setLoading(true);
             const userDoc = await getDoc(doc(db, "users", user.uid));
             const existingData = userDoc.data();
             const existingReviews = existingData?.reviews || [];
@@ -58,7 +62,8 @@ export default function Questions() {
                 country,
                 reviews: existingReviews,
             }, { merge: true });
-            
+
+            setLoading(false);
             setStep(0);
             router.push('/(tabs)');
         } else {
@@ -77,7 +82,7 @@ export default function Questions() {
                 <View style={styles.imageContainer}>
                     <Image source={steps[step].image} style={styles.image} />
                 </View>
-                <Text style={styles.questionText}>{steps[step].question}</Text>
+                <CustomText style={styles.questionText}>{steps[step].question}</CustomText>
                 <TextInput
                     style={styles.input}
                     value={steps[step].value}
@@ -88,12 +93,10 @@ export default function Questions() {
                 />
                 {step < steps.length - 1 ? (
                     <TouchableOpacity onPress={handleNext} style={styles.button}>
-                        <Text style={styles.buttonText}>Next</Text>
+                        <CustomText style={styles.buttonText}>Next</CustomText>
                     </TouchableOpacity>
                 ) : (
-                    <TouchableOpacity onPress={handleSubmit} style={styles.button}>
-                        <Text style={styles.buttonText}>Save</Text>
-                    </TouchableOpacity>
+                    <SubmitButton onPress={handleSubmit} loading={loading} buttonText="Submit" />
                 )}
             </Animatable.View>
         </View>
@@ -131,7 +134,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         textAlign: 'center',
         color: '#000',
-        fontWeight: '700',
     },
     input: {
         width: '100%',

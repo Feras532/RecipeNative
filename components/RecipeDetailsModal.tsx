@@ -1,10 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, StyleSheet, TouchableOpacity, Image, Pressable, ScrollView } from 'react-native';
+import { Modal, View, StyleSheet, TouchableOpacity, Image, Pressable, ScrollView } from 'react-native';
 import { Recipe } from "@/types/types";
 import { auth, db } from "@/firebaseConfig";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from "firebase/firestore";
-
+import CustomText from './ui/CustomText';
 interface RecipeDetailsModalProps {
   visible: boolean;
   recipe: Recipe | null;
@@ -100,38 +100,38 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
         <Image source={{ uri: recipe.imageUrl }} style={styles.modalImage} />
         <ScrollView style={styles.modalContent}>
           <View style={styles.modalDetails}>
-            <Text style={styles.modalTitle}>{recipe.title}</Text>
-            <Text style={styles.authorText}>👨🏻‍🍳 {recipe.author}</Text>
+            <CustomText style={styles.modalTitle}>{recipe.title}</CustomText>
+            <CustomText style={styles.authorText}>👨🏻‍🍳 {recipe.author}</CustomText>
             <View style={styles.ratingAndCalories}>
               <View style={styles.detailItem}>
                 <Ionicons name='flame' size={30} color='#ff5e00' />
-                <Text style={styles.detailText}>{recipe.calories} Cal</Text>
+                <CustomText style={styles.detailText}>{recipe.calories} Cal</CustomText>
               </View>
               <View style={styles.detailItem}>
                 <Ionicons name='time' size={30} color='#2e7bb3' />
-                <Text style={styles.detailText}>{recipe.time} M</Text>
+                <CustomText style={styles.detailText}>{recipe.time} M</CustomText>
               </View>
               <View style={styles.detailItem}>
                 <TouchableOpacity onPress={handleLike} style={styles.likeButton}>
                   <Ionicons name={userLiked ? 'heart' : 'heart-outline'} size={30} color={userLiked ? '#FF4500' : '#888'} />
-                  <Text style={styles.detailText}>{totalLikes > 0 ? `${totalLikes} Likes` : "0 Like"}</Text>
+                  <CustomText style={styles.detailText}>{totalLikes > 0 ? `${totalLikes} Likes` : "0 Like"}</CustomText>
                 </TouchableOpacity>
               </View>
             </View>
-            <Text style={styles.modalSectionTitle}>Ingredients:</Text>
+            <CustomText style={styles.modalSectionTitle}>Ingredients:</CustomText>
             <View style={styles.ingredientsContainer}>
               {recipe.ingredients?.map((ingredient, index) => (
                 <View key={index} style={styles.ingredientContainer}>
-                  <Text style={styles.ingredient}>{ingredient}</Text>
+                  <CustomText style={styles.ingredient}>{ingredient}</CustomText>
                 </View>
               ))}
             </View>
-            <Text style={styles.modalSectionTitle}>Steps:</Text>
+            <CustomText style={styles.modalSectionTitle}>Steps:</CustomText>
             {recipe.steps?.map((step, index) => (
-              <Text key={index} style={styles.step}>{index + 1}. {step.description}</Text>
+              <CustomText key={index} style={styles.step}>{index + 1}. {step.description}</CustomText>
             ))}
             <Pressable onPress={onClose} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Close</Text>
+              <CustomText style={styles.closeButtonText}>Close</CustomText>
             </Pressable>
           </View>
         </ScrollView>
@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: '#333',
     textAlign: 'left',
   },
@@ -188,7 +187,7 @@ const styles = StyleSheet.create({
   ingredientsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'flex-start', 
+    justifyContent: 'flex-start',
     marginBottom: 20,
   },
   ingredientContainer: {
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   closeButton: {
-    marginBottom: 20,
+    marginBottom: 30,
     backgroundColor: "#B24B3D",
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -218,8 +217,7 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 20,
   },
   ratingAndCalories: {
     flexDirection: 'row',
@@ -238,7 +236,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   likeButton: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignItems: 'center',
   },
   likeCount: {

@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, Alert, ActivityIndicator } from 'react-native';
+import { View, TextInput, StyleSheet, Pressable, Alert, ActivityIndicator } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "@/firebaseConfig";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SubmitButton from '@/components/ui/SubmitButton';
-
+import CustomText from '../ui/CustomText';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -72,7 +72,7 @@ export default function Login() {
         <View style={styles.formContainer}>
             <View style={styles.inputWrapper}>
                 <Ionicons name='mail' style={styles.icon} />
-                <Text style={styles.label}>Email</Text>
+                <CustomText style={styles.label}>Email</CustomText>
             </View>
             <TextInput
                 style={styles.input}
@@ -86,7 +86,7 @@ export default function Login() {
             />
             <View style={styles.inputWrapper}>
                 <Ionicons name='key' style={styles.icon} />
-                <Text style={styles.label}>Password</Text>
+                <CustomText style={styles.label}>Password</CustomText>
             </View>
             <TextInput
                 style={styles.input}
@@ -103,7 +103,7 @@ export default function Login() {
                 <Pressable onPress={() => setRememberMe(!rememberMe)} style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
                     {rememberMe && <Ionicons name="checkmark" style={styles.checkboxIcon} />}
                 </Pressable>
-                <Text style={styles.rememberMeText}>Remember Me</Text>
+                <CustomText style={styles.rememberMeText}>Remember Me</CustomText>
             </View>
             <SubmitButton onPress={handleLogin} loading={loading} buttonText="Submit" />
         </View>

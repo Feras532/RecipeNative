@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Pressable, Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Pressable, View, StyleSheet, ScrollView } from 'react-native';
 import AnimatedCoverImage from "@/components/login/AnimatedCoverImage";
 import Login from '@/components/login/login';
 import Signup from '@/components/login/signup';
-
+import CustomText from '@/components/ui/CustomText';
 export default function Index() {
     const [activeButton, setActiveButton] = useState('LOGIN');
 
@@ -17,10 +17,10 @@ export default function Index() {
             <View style={styles.containerLoginSignup}>
                 <View style={styles.loginSignup}>
                     <Pressable onPress={() => handlePress('LOGIN')} style={[styles.button, activeButton === 'LOGIN' && styles.activeButton]}>
-                        <Text style={[styles.btnText, activeButton === 'LOGIN' && styles.activeBtnText]}>LOGIN</Text>
+                        <CustomText style={[styles.btnText, activeButton === 'LOGIN' && styles.activeBtnText]}>LOGIN</CustomText>
                     </Pressable>
                     <Pressable onPress={() => handlePress('SIGNUP')} style={[styles.button, activeButton === 'SIGNUP' && styles.activeButton]}>
-                        <Text style={[styles.btnText, activeButton === 'SIGNUP' && styles.activeBtnText]}>SIGNUP</Text>
+                        <CustomText style={[styles.btnText, activeButton === 'SIGNUP' && styles.activeBtnText]}>SIGNUP</CustomText>
                     </Pressable>
                 </View>
                 {activeButton === 'LOGIN' ? <Login /> : <Signup />}
@@ -61,9 +61,9 @@ const styles = StyleSheet.create({
     },
     btnText: {
         fontSize: 24,
+        fontFamily: 'Kanit-Regular'
     },
     activeBtnText: {
         color: '#fff',
-        fontWeight: 'bold',
     },
 });

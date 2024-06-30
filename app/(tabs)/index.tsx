@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCardRow from '@/components/RecipeCardRow';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
@@ -9,7 +9,7 @@ import { Recipe } from '@/types/types';
 import { db } from '@/firebaseConfig';
 import { collection, onSnapshot } from 'firebase/firestore';
 import RecipeCard from '@/components/RecipeCard';
-
+import CustomText from '@/components/ui/CustomText';
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('New');
   const [modalVisible, setModalVisible] = useState(false);
@@ -72,17 +72,17 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#2b2b2b' }}>
-      <Text style={styles.welcomeText}>
+      <CustomText style={styles.welcomeText}>
         Recipe
-        <Text style={styles.feastText}>Native</Text>
-      </Text>
-      <Text style={styles.top3}>
+        <CustomText style={styles.feastText}>Native</CustomText>
+      </CustomText>
+      <CustomText style={styles.top3}>
         Top 3 Trending Recipes 🔥
-      </Text>
+      </CustomText>
       <RecipeCardRow recipes={recipes} onPress={handleRecipePress} />
-      <Text style={styles.exploreText}>
+      <CustomText style={styles.exploreText}>
         Explore Our Delicious Categories!
-      </Text>
+      </CustomText>
       <SearchBar searchText={searchText} onSearchTextChange={setSearchText} />
       <CategorySelection selectedCategory={selectedCategory} onCategoryPress={handleCategoryPress} />
       <View>
@@ -101,19 +101,16 @@ const styles = StyleSheet.create({
   top3: {
     marginTop: 10,
     fontSize: 18,
-    fontWeight: 'bold',
     textAlign: 'left',
     color: '#555',
   },
   exploreText: {
     fontSize: 18,
-    fontWeight: 'bold',
     textAlign: 'left',
     color: '#555',
   },
   welcomeText: {
     fontSize: 24,
-    fontWeight: 'bold',
     marginTop: 30,
     textAlign: 'left',
     color: '#000',
@@ -134,7 +131,6 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
     marginTop: 20,
     marginBottom: 10,
     textAlign: 'center',

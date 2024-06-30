@@ -13,7 +13,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [fontsLoaded] = useFonts({
-    'Almarai-Regular': require('../assets/fonts/Almarai-Regular.ttf'),
+    'Kanit-Regular': require('../assets/fonts/Kanit-Regular.ttf'),
   });
 
   useEffect(() => {

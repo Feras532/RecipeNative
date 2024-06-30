@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Image, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Recipe } from '@/types/types';
-
+import CustomText from './ui/CustomText';
 interface RecipeCardProps {
     recipe: Recipe;
     onPress: () => void;
@@ -15,20 +15,20 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, onPress }) => {
                 <View style={styles.imageContainer}>
                     <Image source={{ uri: recipe.imageUrl }} style={styles.recipeImage} />
                 </View>
-                <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                <CustomText style={styles.recipeTitle}>{recipe.title}</CustomText>
                 <View style={styles.recipeInfo}>
-                    <Text style={styles.recipeRating}>
+                    <CustomText style={styles.recipeRating}>
                         <Ionicons name='heart' size={16} color='#FF4500' />{' '}
                         {recipe.totalLikes > 0 ? recipe.totalLikes : "0"}
-                    </Text>
-                    <Text style={styles.recipeCalories}>
+                    </CustomText>
+                    <CustomText style={styles.recipeCalories}>
                         <Ionicons name='flame' size={16} color='#ff8800' />{' '}
                         {recipe.calories}
-                    </Text>
-                    <Text style={styles.recipeTime}>
+                    </CustomText>
+                    <CustomText style={styles.recipeTime}>
                         <Ionicons name='time' size={16} color='#388ce0' />{' '}
                         {recipe.time}
-                    </Text>
+                    </CustomText>
                 </View>
             </View>
         </TouchableOpacity>
@@ -65,8 +65,7 @@ const styles = StyleSheet.create({
     },
     recipeTitle: {
         marginTop: 4,
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 20,
         textAlign: 'center'
     },
     recipeRating: {
