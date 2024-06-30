@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         justifyContent: 'flex-start',
-        backgroundColor: '#f0f0f0', // Adjust the background color as needed
+        backgroundColor: '#f0f0f0',
     },
     containerLoginSignup: {
         backgroundColor: '#fff',

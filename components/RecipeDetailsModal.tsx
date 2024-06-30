@@ -1,7 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState, useEffect } from 'react';
-import { Modal, View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
-import { ScrollView } from 'react-native';
+import { Modal, View, Text, StyleSheet, TouchableOpacity, Image, Pressable, ScrollView } from 'react-native';
 import { Recipe } from "@/types/types";
 import { auth, db } from "@/firebaseConfig";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, onSnapshot } from "firebase/firestore";
@@ -102,34 +101,35 @@ const RecipeDetailsModal: React.FC<RecipeDetailsModalProps> = ({ visible, recipe
         <ScrollView style={styles.modalContent}>
           <View style={styles.modalDetails}>
             <Text style={styles.modalTitle}>{recipe.title}</Text>
+            <Text style={styles.authorText}>👨🏻‍🍳 {recipe.author}</Text>
             <View style={styles.ratingAndCalories}>
               <View style={styles.detailItem}>
-                <Ionicons name='heart' size={20} color='#FF4500' />
-                <Text style={styles.detailText}>{totalLikes > 0 ? `${totalLikes} Likes` : "0 Like"}</Text>
+                <Ionicons name='flame' size={30} color='#ff5e00' />
+                <Text style={styles.detailText}>{recipe.calories} Cal</Text>
               </View>
               <View style={styles.detailItem}>
-                <Ionicons name='flame' size={20} color='#FF4500' />
-                <Text style={styles.detailText}>{recipe.calories} Kcal</Text>
+                <Ionicons name='time' size={30} color='#2e7bb3' />
+                <Text style={styles.detailText}>{recipe.time} M</Text>
               </View>
               <View style={styles.detailItem}>
-                <Ionicons name='time' size={16} color='#388ce0' />
-                <Text style={styles.detailText}>{recipe.time} Min</Text>
+                <TouchableOpacity onPress={handleLike} style={styles.likeButton}>
+                  <Ionicons name={userLiked ? 'heart' : 'heart-outline'} size={30} color={userLiked ? '#FF4500' : '#888'} />
+                  <Text style={styles.detailText}>{totalLikes > 0 ? `${totalLikes} Likes` : "0 Like"}</Text>
+                </TouchableOpacity>
               </View>
             </View>
             <Text style={styles.modalSectionTitle}>Ingredients:</Text>
-            {recipe.ingredients?.map((ingredient, index) => (
-              <Text key={index} style={styles.ingredient}>{ingredient}</Text>
-            ))}
+            <View style={styles.ingredientsContainer}>
+              {recipe.ingredients?.map((ingredient, index) => (
+                <View key={index} style={styles.ingredientContainer}>
+                  <Text style={styles.ingredient}>{ingredient}</Text>
+                </View>
+              ))}
+            </View>
             <Text style={styles.modalSectionTitle}>Steps:</Text>
             {recipe.steps?.map((step, index) => (
               <Text key={index} style={styles.step}>{index + 1}. {step.description}</Text>
             ))}
-            <View style={styles.likeContainer}>
-              <Text style={styles.userRatingText}>Did you like the recipe?</Text>
-              <TouchableOpacity onPress={handleLike} style={styles.likeButton}>
-                <Ionicons name={userLiked ? 'heart' : 'heart-outline'} size={60} color={userLiked ? '#FF4500' : '#888'} />
-              </TouchableOpacity>
-            </View>
             <Pressable onPress={onClose} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Close</Text>
             </Pressable>
@@ -166,17 +166,16 @@ const styles = StyleSheet.create({
   modalDetails: {
     width: '100%',
   },
-  detailText: {
-    fontSize: 18,
-    color: '#444',
-    marginLeft: 5,
-  },
   modalTitle: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 15,
-    textAlign: 'center',
+    textAlign: 'left',
+  },
+  authorText: {
+    fontSize: 20,
+    color: '#666',
+    marginBottom: 20,
   },
   modalSectionTitle: {
     fontSize: 20,
@@ -186,11 +185,21 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     width: '100%',
   },
+  ingredientsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    borderRadius: 8,
+  },
+  ingredientContainer: {
+    backgroundColor: '#fff1d0',
+    padding: 10,
+    borderRadius: 5,
+    marginRight: 10,
+    marginBottom: 10,
+  },
   ingredient: {
     fontSize: 16,
     color: '#555',
-    marginBottom: 5,
-    textAlign: 'left',
   },
   step: {
     fontSize: 16,
@@ -217,30 +226,29 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   detailItem: {
+    backgroundColor: '#fcfcfc',
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  likeContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 20,
+    padding: 10,
+    borderRadius: 10,
+    marginHorizontal: 5,
+    shadowColor: '#999',
+    shadowRadius: 4,
+    elevation: 3,
   },
   likeButton: {
-    flexDirection: 'row',
+    flexDirection: 'row', 
     alignItems: 'center',
   },
   likeCount: {
+    fontSize: 14,
+    color: '#444',
+    marginLeft: 5,
+  },
+  detailText: {
     fontSize: 18,
     color: '#444',
-    marginLeft: 10,
-  },
-  userRatingText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
-    textAlign: 'center',
+    marginLeft: 5,
   },
 });
 
