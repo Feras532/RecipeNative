@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable } from 'react-native';
+import { Image, StyleSheet, Text, View, ScrollView, TouchableOpacity, Pressable, Share, Linking, Platform } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { Ionicons } from '@expo/vector-icons';
 import { auth, db } from '@/firebaseConfig';
@@ -27,13 +27,26 @@ export default function Profile() {
   const handleEditProfile = () => {
     router.push('/profileMaker/profileMaker');
   };
+
   const handleLogOut = () => {
     router.push('/');
   };
 
-  const handleSubscribe = () => {
-    // Implement your subscription logic here
-    console.log("Subscribe to remove ads");
+  const handleInviteFriend = async () => {
+    try {
+      await Share.share({
+        message: 'Check out this awesome RecipeNative app! Link:LOREM ',
+      });
+    } catch (error) {
+      console.error('Error sharing content: ', error);
+    }
+  };
+
+  const handleRateApp = () => {
+    const url = Platform.OS === 'ios'
+      ? 'https://www.apple.com/sa/app-store'
+      : 'https://play.google.com/store/games?hl=en';
+    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
   };
 
   return (
@@ -59,11 +72,11 @@ export default function Profile() {
           <Ionicons name="information-circle-outline" size={24} color="#666" style={styles.infoIcon} />
           <Text style={styles.infoValue}>{profileData.bio}</Text>
         </View>
-        <Pressable style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
+        <Pressable onPress={handleInviteFriend} style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
           <Ionicons name="person-add-outline" size={24} color="#666" style={styles.infoIcon} />
           <Text style={styles.infoValue}>Invite a Friend</Text>
         </Pressable>
-        <Pressable style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
+        <Pressable onPress={handleRateApp} style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
           <Ionicons name="star-outline" size={24} color="#666" style={styles.infoIcon} />
           <Text style={styles.infoValue}>Rate the Application</Text>
         </Pressable>
