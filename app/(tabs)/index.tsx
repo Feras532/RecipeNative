@@ -37,6 +37,7 @@ const HomeScreen: React.FC = () => {
   const filterRecipes = () => {
     let filtered = recipes;
 
+    // for now "New" will only display all recipes
     if (selectedCategory !== 'New') {
       if (searchText) {
         filtered = filtered.filter(recipe =>

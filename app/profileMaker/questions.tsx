@@ -53,6 +53,7 @@ export default function Questions() {
                 bio,
                 country,
             });
+            setStep(0);
             router.push('/(tabs)');
         } else {
             Alert.alert("Error", "User not authenticated");
