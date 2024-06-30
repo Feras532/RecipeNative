@@ -10,7 +10,7 @@ import { db } from '@/firebaseConfig';
 import { collection, onSnapshot } from 'firebase/firestore';
 
 const HomeScreen: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>('Hot');
+  const [selectedCategory, setSelectedCategory] = useState<string>('New');
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [searchText, setSearchText] = useState('');
@@ -24,6 +24,7 @@ const HomeScreen: React.FC = () => {
         ...doc.data(),
       } as Recipe));
       setRecipes(updatedRecipes);
+      setFilteredRecipes(updatedRecipes);
     });
 
     return () => unsubscribe();
@@ -31,21 +32,23 @@ const HomeScreen: React.FC = () => {
 
   useEffect(() => {
     filterRecipes();
-  }, [searchText, recipes, selectedCategory]);
+  }, [searchText, selectedCategory]);
 
   const filterRecipes = () => {
     let filtered = recipes;
 
-    if (searchText) {
-      filtered = filtered.filter(recipe =>
-        recipe.title.toLowerCase().includes(searchText.toLowerCase())
-      );
-    }
+    if (selectedCategory !== 'New') {
+      if (searchText) {
+        filtered = filtered.filter(recipe =>
+          recipe.title.toLowerCase().includes(searchText.toLowerCase())
+        );
+      }
 
-    if (selectedCategory) {
-      filtered = filtered.filter(recipe =>
-        recipe.categories.includes(selectedCategory)
-      );
+      if (selectedCategory) {
+        filtered = filtered.filter(recipe =>
+          recipe.categories.includes(selectedCategory)
+        );
+      }
     }
 
     setFilteredRecipes(filtered);

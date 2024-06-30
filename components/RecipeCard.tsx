@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     recipeImage: {
         width: "100%",
-        height: 140,
+        height: 120,
         resizeMode: 'contain',
     },
     recipeInfo: {
