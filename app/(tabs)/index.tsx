@@ -76,7 +76,7 @@ const HomeScreen: React.FC = () => {
         Recipe
         <Text style={styles.feastText}>Native</Text>
       </Text>
-      <Text style={styles.exploreText}>
+      <Text style={styles.top3}>
         Top 3 Trending Recipes 🔥
       </Text>
       <RecipeCardRow recipes={recipes} onPress={handleRecipePress} />
@@ -98,11 +98,18 @@ const HomeScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  top3: {
+    marginTop: 10,
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    color: '#555',
+  },
   exploreText: {
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'left',
-    color: '#000',
+    color: '#555',
   },
   welcomeText: {
     fontSize: 24,

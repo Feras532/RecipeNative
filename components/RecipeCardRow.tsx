@@ -40,7 +40,7 @@ const RecipeCardRow: React.FC<RecipeCardRowProps> = ({ recipes, onPress }) => {
 const styles = StyleSheet.create({
     container: {
         padding: 5,
-        marginVertical: 10,
+        marginTop: 0,
     },
     recipeCard: {
         flexDirection: 'row',

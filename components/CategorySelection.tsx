@@ -13,15 +13,13 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({ selectedCategory,
       {categories.map((category, index) => (
         <TouchableOpacity
           key={index}
-          style={styles.categoryButton}
+          style={[
+            styles.categoryButton,
+            selectedCategory === category.label && styles.selectedCategoryButton
+          ]}
           onPress={() => onCategoryPress(category.label)}
         >
-          <View style={[
-            styles.categoryInner,
-            selectedCategory === category.label && styles.selectedCategoryInner,
-          ]}>
-            <Text style={styles.categoryEmoji}>{category.emoji}</Text>
-          </View>
+          <Text style={styles.categoryEmoji}>{category.emoji}</Text>
           <Text style={styles.categoryLabel}>{category.label}</Text>
         </TouchableOpacity>
       ))}
@@ -30,35 +28,34 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({ selectedCategory,
 };
 
 const styles = StyleSheet.create({
-  categoryScroll: {},
-  categoryButton: {
-    alignItems: 'center',
-    marginHorizontal: 4,
+  categoryScroll: {
+    paddingHorizontal: 10,
   },
-  categoryInner: {
-    borderRadius: 50,
-    height: 70,
-    width: 70,
+  categoryButton: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
+    marginHorizontal: 2,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 25,
     borderWidth: 1,
     borderColor: '#ccc',
     backgroundColor: '#ffffff', // Default background color
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    marginBottom: 8
   },
-  selectedCategoryInner: {
+  selectedCategoryButton: {
     backgroundColor: '#fff1d0', // Selected background color
     borderColor: "#B24B3D",
   },
   categoryEmoji: {
-    fontSize: 30,
-    lineHeight: 60,
+    fontSize: 20,
+    marginRight: 8,
   },
   categoryLabel: {
-    fontSize: 14,
-    marginTop: 5,
+    fontSize: 16,
     color: '#000000',
   },
 });
