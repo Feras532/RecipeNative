@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import RecipeCard from '@/components/RecipeCard';
+import RecipeCardRow from '@/components/RecipeCardRow';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import CategorySelection from '@/components/CategorySelection';
 import SearchBar from '@/components/SearchBar';
 import { Recipe } from '@/types/types';
 import { db } from '@/firebaseConfig';
 import { collection, onSnapshot } from 'firebase/firestore';
+import RecipeCard from '@/components/RecipeCard';
 
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('New');
@@ -72,14 +73,17 @@ const HomeScreen: React.FC = () => {
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#2b2b2b' }}>
       <Text style={styles.welcomeText}>
-        Ready to
-        <Text style={styles.feastText}> FEAST?</Text>
-        <Text style={styles.feastText}>😋</Text>
+        Recipe
+        <Text style={styles.feastText}>Native</Text>
+      </Text>
+      <Text style={styles.exploreText}>
+        Top 3 Trending Recipes 🔥
+      </Text>
+      <RecipeCardRow recipes={recipes} onPress={handleRecipePress} />
+      <Text style={styles.exploreText}>
+        Explore Our Delicious Categories!
       </Text>
       <SearchBar searchText={searchText} onSearchTextChange={setSearchText} />
-      <Text style={styles.exploreText}>
-        Explore Our Delicious Categories! 🍉
-      </Text>
       <CategorySelection selectedCategory={selectedCategory} onCategoryPress={handleCategoryPress} />
       <View>
         <View style={styles.recipesSection}>

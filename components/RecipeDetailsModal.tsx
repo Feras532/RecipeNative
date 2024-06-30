@@ -188,7 +188,8 @@ const styles = StyleSheet.create({
   ingredientsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    borderRadius: 8,
+    justifyContent: 'flex-start', 
+    marginBottom: 20,
   },
   ingredientContainer: {
     backgroundColor: '#fff1d0',
