@@ -10,7 +10,6 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ searchText, onSearchTextChange }) => {
   return (
     <View style={styles.searchContainer}>
-      <Ionicons name="search" size={20} color="#000" style={styles.searchIcon} />
       <TextInput
         style={styles.searchBar}
         placeholder="Search recipes..."
@@ -18,6 +17,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchText, onSearchTextChange })
         value={searchText}
         onChangeText={onSearchTextChange}
       />
+      <View style={styles.iconWrapper}>
+        <Ionicons name="search" size={20} color="#fff" />
+      </View>
     </View>
   );
 };
@@ -29,13 +31,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     paddingVertical: 8,
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: 20,
+    borderWidth: 0.5,
     borderColor: "#B24B3D",
     backgroundColor: '#fff',
   },
-  searchIcon: {
-    marginRight: 10,
+  iconWrapper: {
+    width: 35,
+    height: 35,
+    borderRadius: 15,
+    backgroundColor: '#B24B3D',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
   },
   searchBar: {
     flex: 1,
