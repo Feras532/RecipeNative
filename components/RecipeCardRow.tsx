@@ -25,8 +25,8 @@ const RecipeCardRow: React.FC<RecipeCardRowProps> = ({ recipes, onPress }) => {
                             <Text style={styles.authorText}>👨‍🍳 {recipe.author}</Text>
                             <View style={styles.recipeInfo}>
                                 <View style={styles.infoContainer}>
-                                    <Ionicons name='heart' size={30} color='#B24B3D' />
-                                <Text style={styles.recipeRating}>{recipe.totalLikes > 0 ? recipe.totalLikes : "0"} Likes </Text>
+                                    <Ionicons name='heart' size={30} color='#c25648' />
+                                    <Text style={styles.recipeRating}>{recipe.totalLikes > 0 ? recipe.totalLikes : "0"} Likes </Text>
                                 </View>
                             </View>
                         </View>
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginLeft: 5,
         overflow: 'hidden',
-        backgroundColor: '#fff1d0',
+        backgroundColor: '#c25648',
     },
     recipeImage: {
         width: '100%',
