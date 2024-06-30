@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
-        backgroundColor: '#f9fafc',
+        backgroundColor: '#f0f0f0',
     },
     animation: {
         width: 400,

@@ -47,12 +47,18 @@ export default function Questions() {
 
     const handleSubmit = async () => {
         if (user) {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            const existingData = userDoc.data();
+            const existingReviews = existingData?.reviews || [];
+
             await setDoc(doc(db, "users", user.uid), {
                 name,
                 age,
                 bio,
                 country,
-            });
+                reviews: existingReviews,
+            }, { merge: true });
+            
             setStep(0);
             router.push('/(tabs)');
         } else {
@@ -112,7 +118,6 @@ const styles = StyleSheet.create({
         width: 350,
         height: 350,
         borderRadius: 350,
-        // backgroundColor: '#AAAAAA',
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
