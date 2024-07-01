@@ -38,7 +38,7 @@ export default function Signup() {
             console.log('Sending email verification to:', user.email);
             await sendEmailVerification(user);
             console.log('Email sent to:', user.email);
-            router.push({ pathname: '/(auth)/Otp', params: { email } });
+            router.push({ pathname: '/(auth)/VerifyEmail', params: { email } });
         } catch (error: any) {
             let errorMessage = 'An error occurred. Please try again.';
             if (error.code === 'auth/email-already-in-use') {

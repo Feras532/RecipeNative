@@ -21,7 +21,7 @@ const HomeScreen: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'recipes'), (snapshot) => {
+    const watch = onSnapshot(collection(db, 'recipes'), (snapshot) => {
       const updatedRecipes: Recipe[] = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -31,7 +31,7 @@ const HomeScreen: React.FC = () => {
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => watch();
   }, []);
 
   useEffect(() => {
@@ -99,6 +99,7 @@ const HomeScreen: React.FC = () => {
       <CategorySelection selectedCategory={selectedCategory} onCategoryPress={handleCategoryPress} />
       <View>
         <View style={styles.recipesSection}>
+          {/* loading then display result */}
           {loading ? (
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#B24B3D" />

@@ -5,7 +5,7 @@ import LottieView from 'lottie-react-native';
 import { getAuth, sendEmailVerification } from "firebase/auth";
 import { app } from "@/firebaseConfig";
 
-const Otp = () => {
+const VerifyEmail = () => {
     const [timer, setTimer] = useState(30);
     const [canResend, setCanResend] = useState(false);
     const router = useRouter();
@@ -132,4 +132,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Otp;
+export default VerifyEmail;
