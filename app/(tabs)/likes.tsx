@@ -6,11 +6,14 @@ import RecipeCard from '@/components/RecipeCard';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { Recipe } from "@/types/types";
 import CustomText from '@/components/ui/CustomText';
+import SearchBar from "@/components/SearchBar";
+
 const Likes = () => {
   const [likedRecipes, setLikedRecipes] = useState<Recipe[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState('');
   const user = auth.currentUser;
 
   useEffect(() => {
@@ -53,6 +56,10 @@ const Likes = () => {
     setSelectedRecipe(null);
   };
 
+  const filteredLikedRecipes = likedRecipes.filter(recipe =>
+    recipe.title.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -74,9 +81,10 @@ const Likes = () => {
     <View style={styles.container}>
       <CustomText style={styles.headerText}>Your Liked Recipes ❤️</CustomText>
       <CustomText style={styles.totalLikesText}>Total Likes: {likedRecipes.length}</CustomText>
+      <SearchBar searchText={searchText} onSearchTextChange={setSearchText} />
       <ScrollView>
         <View style={styles.recipesSection}>
-          {likedRecipes.map((recipe, index) => (
+          {filteredLikedRecipes.map((recipe, index) => (
             <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
           ))}
         </View>
