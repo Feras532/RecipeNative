@@ -10,6 +10,8 @@ import { db } from '@/firebaseConfig';
 import { collection, onSnapshot } from 'firebase/firestore';
 import RecipeCard from '@/components/RecipeCard';
 import CustomText from '@/components/ui/CustomText';
+import { Ionicons } from '@expo/vector-icons';
+
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('New');
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,19 +40,16 @@ const HomeScreen: React.FC = () => {
   const filterRecipes = () => {
     let filtered = recipes;
 
-    // for now "New" will only display all recipes
-    if (selectedCategory !== 'New') {
-      if (searchText) {
-        filtered = filtered.filter(recipe =>
-          recipe.title.toLowerCase().includes(searchText.toLowerCase())
-        );
-      }
+    if (searchText) {
+      filtered = filtered.filter(recipe =>
+        recipe.title.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
 
-      if (selectedCategory) {
-        filtered = filtered.filter(recipe =>
-          recipe.categories.includes(selectedCategory)
-        );
-      }
+    if (selectedCategory !== 'New') {
+      filtered = filtered.filter(recipe =>
+        recipe.categories.includes(selectedCategory)
+      );
     }
 
     setFilteredRecipes(filtered);
@@ -72,10 +71,16 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#2b2b2b' }}>
-      <CustomText style={styles.welcomeText}>
-        Recipe
-        <CustomText style={styles.feastText}>Native</CustomText>
-      </CustomText>
+      <View style={styles.headerContainer}>
+        <CustomText style={styles.welcomeText}>
+          Recipe
+          <CustomText style={styles.feastText}>Native</CustomText>
+        </CustomText>
+        <View style={styles.notificationContainer}>
+          <Ionicons style={styles.bellIcon} size={25} name='notifications-outline'/>
+          <View style={styles.notificationDot} />
+        </View>
+      </View>
       <CustomText style={styles.top3}>
         Top 3 Trending Recipes 🔥
       </CustomText>
@@ -98,6 +103,11 @@ const HomeScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    position: 'relative',
+    marginTop: 30,
+    paddingHorizontal: 10,
+  },
   top3: {
     marginTop: 10,
     fontSize: 18,
@@ -109,9 +119,25 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: '#555',
   },
+  notificationContainer: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+  },
+  bellIcon: {
+    color: '#000',
+  },
+  notificationDot: {
+    position: 'absolute',
+    top: -1,
+    right: -1,
+    width: 8,
+    height: 8,
+    borderRadius: 5,
+    backgroundColor: 'red',
+  },
   welcomeText: {
     fontSize: 24,
-    marginTop: 30,
     textAlign: 'left',
     color: '#000',
   },
