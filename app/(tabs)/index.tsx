@@ -7,9 +7,9 @@ import SearchBar from '@/components/SearchBar';
 import { Recipe } from '@/types/types';
 import { db } from '@/firebaseConfig';
 import { collection, onSnapshot } from 'firebase/firestore';
-import RecipeCard from '@/components/RecipeCard';
 import CustomText from '@/components/ui/CustomText';
 import { Ionicons } from '@expo/vector-icons';
+import AnimatedRecipeCard from '@/components/ui/AnimatedRecipeCard';
 
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('New');
@@ -105,7 +105,12 @@ const HomeScreen: React.FC = () => {
             </View>
           ) : filteredRecipes.length > 0 ? (
             filteredRecipes.map((recipe, index) => (
-              <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
+              <AnimatedRecipeCard
+                key={index}
+                recipe={recipe}
+                onPress={handleRecipePress}
+                index={index}
+              />
             ))
           ) : (
             <CustomText style={styles.noRecipesText}>No recipes found 😔</CustomText>

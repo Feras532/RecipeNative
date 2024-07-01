@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, View, ScrollView, TouchableOpacity, Pressable, Share, Linking, Platform } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { Image, StyleSheet, View, ScrollView, TouchableOpacity, Pressable, Share, Linking, Platform, Animated, Easing } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { auth, db } from '@/firebaseConfig';
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from 'expo-router';
 import CustomText from '@/components/ui/CustomText';
+
 export default function Profile() {
   const [profileData, setProfileData] = useState<any>({ name: '', email: '', age: '', bio: '', country: '' });
 
   const currentUser = auth.currentUser;
   const router = useRouter();
+  const animatedValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -21,7 +23,17 @@ export default function Profile() {
       }
     };
     fetchProfileData();
+    animateElements();
   }, []);
+
+  const animateElements = () => {
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+      easing: Easing.out(Easing.ease),
+    }).start();
+  };
 
   const handleEditProfile = () => {
     router.push('/profileMaker/profileMaker');
@@ -51,38 +63,40 @@ export default function Profile() {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.profileImageContainer}>
+        <Animated.View style={{ ...styles.profileImageContainer, opacity: animatedValue, transform: [{ scale: animatedValue }] }}>
           <Image source={require('../../assets/images/man.png')} style={styles.profileImage} />
           <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
             <Ionicons name="pencil-outline" size={25} color="#fff" />
           </TouchableOpacity>
-        </View>
-        <CustomText style={styles.name}>{profileData.name}</CustomText>
-        <CustomText style={styles.email}>{currentUser?.email}</CustomText>
-        <View style={styles.infoContainer}>
-          <Ionicons name="person-outline" size={24} color="#666" style={styles.infoIcon} />
-          <CustomText style={styles.infoValue}>{profileData.age} years</CustomText>
-        </View>
-        <View style={styles.infoContainer}>
-          <Ionicons name="location-outline" size={24} color="#666" style={styles.infoIcon} />
-          <CustomText style={styles.infoValue}>{profileData.country}</CustomText>
-        </View>
-        <View style={styles.infoContainer}>
-          <Ionicons name="information-circle-outline" size={24} color="#666" style={styles.infoIcon} />
-          <CustomText style={styles.infoValue}>{profileData.bio}</CustomText>
-        </View>
-        <Pressable onPress={handleInviteFriend} style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
-          <Ionicons name="person-add-outline" size={24} color="#666" style={styles.infoIcon} />
-          <CustomText style={styles.infoValue}>Invite a Friend</CustomText>
-        </Pressable>
-        <Pressable onPress={handleRateApp} style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
-          <Ionicons name="star-outline" size={24} color="#666" style={styles.infoIcon} />
-          <CustomText style={styles.infoValue}>Rate the Application</CustomText>
-        </Pressable>
-        <TouchableOpacity onPress={handleLogOut} style={styles.logoutButton}>
-          <Ionicons name="log-out-outline" size={24} color="#fff" />
-          <CustomText style={styles.logoutButtonText}>Logout</CustomText>
-        </TouchableOpacity>
+        </Animated.View>
+        <Animated.View style={{ opacity: animatedValue, transform: [{ translateY: animatedValue.interpolate({ inputRange: [0, 1], outputRange: [50, 0] }) }] }}>
+          <CustomText style={styles.name}>{profileData.name}</CustomText>
+          <CustomText style={styles.email}>{currentUser?.email}</CustomText>
+          <View style={styles.infoContainer}>
+            <Ionicons name="person-outline" size={24} color="#666" style={styles.infoIcon} />
+            <CustomText style={styles.infoValue}>{profileData.age} years</CustomText>
+          </View>
+          <View style={styles.infoContainer}>
+            <Ionicons name="location-outline" size={24} color="#666" style={styles.infoIcon} />
+            <CustomText style={styles.infoValue}>{profileData.country}</CustomText>
+          </View>
+          <View style={styles.infoContainer}>
+            <Ionicons name="information-circle-outline" size={24} color="#666" style={styles.infoIcon} />
+            <CustomText style={styles.infoValue}>{profileData.bio}</CustomText>
+          </View>
+          <Pressable onPress={handleInviteFriend} style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
+            <Ionicons name="person-add-outline" size={24} color="#666" style={styles.infoIcon} />
+            <CustomText style={styles.infoValue}>Invite a Friend</CustomText>
+          </Pressable>
+          <Pressable onPress={handleRateApp} style={({ pressed }) => [styles.infoContainer, pressed && styles.pressedContainer]}>
+            <Ionicons name="star-outline" size={24} color="#666" style={styles.infoIcon} />
+            <CustomText style={styles.infoValue}>Rate the Application</CustomText>
+          </Pressable>
+          <TouchableOpacity onPress={handleLogOut} style={styles.logoutButton}>
+            <Ionicons name="log-out-outline" size={24} color="#fff" />
+            <CustomText style={styles.logoutButtonText}>Logout</CustomText>
+          </TouchableOpacity>
+        </Animated.View>
       </ScrollView>
     </View>
   );
@@ -119,11 +133,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   name: {
+    textAlign: 'center',
     fontSize: 26,
     color: '#333',
     marginVertical: 10,
   },
   email: {
+    textAlign: 'center',
     fontSize: 18,
     color: '#666',
     marginBottom: 20,
@@ -158,15 +174,15 @@ const styles = StyleSheet.create({
   logoutButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#B24B3D',
     paddingVertical: 15,
-    paddingHorizontal: 50,
-    borderRadius: 25,
+    borderRadius: 10,
     marginVertical: 20,
   },
   logoutButtonText: {
     color: '#fff',
     fontSize: 18,
-    marginLeft: 10,
+    marginLeft: 5,
   },
 });

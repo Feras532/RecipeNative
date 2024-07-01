@@ -92,4 +92,3 @@ const styles = StyleSheet.create({
 });
 
 export default RecipeCard;
-export type { Recipe };

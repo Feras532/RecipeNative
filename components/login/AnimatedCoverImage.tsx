@@ -7,7 +7,7 @@ const AnimatedCoverImage = () => {
     useEffect(() => {
         Animated.timing(animatedValue, {
             toValue: 1,
-            duration: 4000,
+            duration: 6000,
             useNativeDriver: true,
         }).start();
     }, []);
@@ -21,7 +21,7 @@ const AnimatedCoverImage = () => {
                     transform: [{
                         translateY: animatedValue.interpolate({
                             inputRange: [0, 1],
-                            outputRange: [-100, 0],
+                            outputRange: [-350, 0],
                         }),
                     }],
                 },

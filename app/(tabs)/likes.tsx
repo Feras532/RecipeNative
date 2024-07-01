@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { auth, db } from '@/firebaseConfig';
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
-import RecipeCard from '@/components/RecipeCard';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import { Recipe } from "@/types/types";
 import CustomText from '@/components/ui/CustomText';
 import SearchBar from "@/components/SearchBar";
+import AnimatedRecipeCard from '@/components/ui/AnimatedRecipeCard';
 
 const Likes = () => {
   const [likedRecipes, setLikedRecipes] = useState<Recipe[]>([]);
@@ -85,7 +85,12 @@ const Likes = () => {
       <ScrollView>
         <View style={styles.recipesSection}>
           {filteredLikedRecipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
+            <AnimatedRecipeCard
+              key={index}
+              recipe={recipe}
+              onPress={handleRecipePress}
+              index={index}
+            />
           ))}
         </View>
       </ScrollView>
