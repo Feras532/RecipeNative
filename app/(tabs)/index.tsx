@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import RecipeCardRow from '@/components/RecipeCardRow';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import CategorySelection from '@/components/CategorySelection';
@@ -11,6 +10,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import RecipeCard from '@/components/RecipeCard';
 import CustomText from '@/components/ui/CustomText';
 import { Ionicons } from '@expo/vector-icons';
+import { ScrollView } from 'react-native';
 
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('New');
@@ -70,7 +70,7 @@ const HomeScreen: React.FC = () => {
   };
 
   return (
-    <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#2b2b2b' }}>
+    <ScrollView style={styles.container}>
       <View style={styles.headerContainer}>
         <CustomText style={styles.welcomeText}>
           Recipe
@@ -98,11 +98,15 @@ const HomeScreen: React.FC = () => {
         </View>
       </View>
       <RecipeDetailsModal visible={modalVisible} recipe={selectedRecipe} onClose={closeModal} />
-    </ParallaxScrollView>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container:{
+    padding: 10,
+    
+  },
   headerContainer: {
     position: 'relative',
     marginTop: 30,
@@ -115,6 +119,7 @@ const styles = StyleSheet.create({
     color: '#555',
   },
   exploreText: {
+    marginBottom: 5,
     fontSize: 18,
     textAlign: 'left',
     color: '#555',
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   feastText: {
-    color: '#B24B3D', // Color for "FEAST"
+    color: '#B24B3D', // Color for "nATIVE"
   },
   questionText: {
     fontSize: 18,

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Image, StyleSheet, View, ScrollView, TouchableOpacity, Pressable, Share, Linking, Platform } from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { Ionicons } from '@expo/vector-icons';
 import { auth, db } from '@/firebaseConfig';
 import { doc, getDoc } from "firebase/firestore";
@@ -50,7 +49,7 @@ export default function Profile() {
   };
 
   return (
-    <ParallaxScrollView headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.profileImageContainer}>
           <Image source={require('../../assets/images/man.png')} style={styles.profileImage} />
@@ -85,7 +84,7 @@ export default function Profile() {
           <CustomText style={styles.logoutButtonText}>Logout</CustomText>
         </TouchableOpacity>
       </ScrollView>
-    </ParallaxScrollView>
+    </View>
   );
 }
 
