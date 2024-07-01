@@ -93,7 +93,7 @@ const HomeScreen: React.FC = () => {
         <RecipeCardRow recipes={recipes} onPress={handleRecipePress} />
       )}
       <CustomText style={styles.exploreText}>
-        Explore Our Delicious Categories!
+        Explore Our Delicious Categories🤩
       </CustomText>
       <SearchBar searchText={searchText} onSearchTextChange={setSearchText} />
       <CategorySelection selectedCategory={selectedCategory} onCategoryPress={handleCategoryPress} />
@@ -103,10 +103,12 @@ const HomeScreen: React.FC = () => {
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#B24B3D" />
             </View>
-          ) : (
+          ) : filteredRecipes.length > 0 ? (
             filteredRecipes.map((recipe, index) => (
               <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
             ))
+          ) : (
+            <CustomText style={styles.noRecipesText}>No recipes found 😔</CustomText>
           )}
         </View>
       </View>
@@ -116,7 +118,7 @@ const HomeScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     padding: 10,
   },
   headerContainer: {
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   feastText: {
-    color: '#B24B3D', // Color for "nATIVE"
+    color: '#B24B3D',
   },
   questionText: {
     fontSize: 18,
@@ -183,7 +185,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 200, 
+    height: 200,
+  },
+  noRecipesText: {
+    fontSize: 16,
+    color: '#555',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
 
