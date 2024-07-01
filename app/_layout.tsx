@@ -1,13 +1,14 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { LogBox } from 'react-native';
+import React, { useEffect } from 'react';
+import { ThemeProvider, DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { Stack } from 'expo-router';
 import 'react-native-reanimated';
-
 import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+LogBox.ignoreLogs([
+  'fontFamily "kanit-Regular" is not a system font and has not been loaded through expo-font',
+]);
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
