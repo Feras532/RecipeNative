@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import RecipeCardRow from '@/components/RecipeCardRow';
 import RecipeDetailsModal from '@/components/RecipeDetailsModal';
 import CategorySelection from '@/components/CategorySelection';
@@ -10,7 +10,6 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import RecipeCard from '@/components/RecipeCard';
 import CustomText from '@/components/ui/CustomText';
 import { Ionicons } from '@expo/vector-icons';
-import { ScrollView } from 'react-native';
 
 const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('New');
@@ -19,6 +18,7 @@ const HomeScreen: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'recipes'), (snapshot) => {
@@ -28,6 +28,7 @@ const HomeScreen: React.FC = () => {
       } as Recipe));
       setRecipes(updatedRecipes);
       setFilteredRecipes(updatedRecipes);
+      setLoading(false);
     });
 
     return () => unsubscribe();
@@ -84,7 +85,13 @@ const HomeScreen: React.FC = () => {
       <CustomText style={styles.top3}>
         Top 3 Trending Recipes 🔥
       </CustomText>
-      <RecipeCardRow recipes={recipes} onPress={handleRecipePress} />
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#B24B3D" />
+        </View>
+      ) : (
+        <RecipeCardRow recipes={recipes} onPress={handleRecipePress} />
+      )}
       <CustomText style={styles.exploreText}>
         Explore Our Delicious Categories!
       </CustomText>
@@ -92,9 +99,15 @@ const HomeScreen: React.FC = () => {
       <CategorySelection selectedCategory={selectedCategory} onCategoryPress={handleCategoryPress} />
       <View>
         <View style={styles.recipesSection}>
-          {filteredRecipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
-          ))}
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#B24B3D" />
+            </View>
+          ) : (
+            filteredRecipes.map((recipe, index) => (
+              <RecipeCard key={index} recipe={recipe} onPress={() => handleRecipePress(recipe)} />
+            ))
+          )}
         </View>
       </View>
       <RecipeDetailsModal visible={modalVisible} recipe={selectedRecipe} onClose={closeModal} />
@@ -105,7 +118,6 @@ const HomeScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container:{
     padding: 10,
-    
   },
   headerContainer: {
     position: 'relative',
@@ -166,6 +178,12 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     color: '#ff6347',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 200, 
   },
 });
 
