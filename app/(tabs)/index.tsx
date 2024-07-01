@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 5,
-    backgroundColor: 'red',
+    backgroundColor: '#B24B3D',
   },
   welcomeText: {
     fontSize: 24,
