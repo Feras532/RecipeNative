@@ -8,6 +8,7 @@ import CustomText from '@/components/ui/CustomText';
 import { Ionicons } from '@expo/vector-icons';
 import TopRatedRecipes from '@/components/TopRatedRecipes';
 import useFetchRecipes from '@/hooks/useFetchRecipes';
+import usePaginateRecipes from '@/hooks/usePaginateRecipes';
 import AnimatedRecipeCard from '@/components/ui/AnimatedRecipeCard';
 import { Recipe } from '@/types/types';
 
@@ -16,7 +17,10 @@ const HomeScreen: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [searchText, setSearchText] = useState('');
-  const { recipes, loading, isFetchingMore, loadMoreRecipes } = useFetchRecipes(searchText, selectedCategory);
+  const { recipes: initialRecipes, loading, lastVisible } = useFetchRecipes(searchText, selectedCategory);
+  const { recipes: moreRecipes, isFetchingMore, loadMoreRecipes } = usePaginateRecipes(lastVisible);
+
+  const allRecipes = [...initialRecipes, ...moreRecipes];
 
   const handleCategoryPress = (label: string) => {
     setSelectedCategory(label);
@@ -65,8 +69,8 @@ const HomeScreen: React.FC = () => {
             <View style={styles.loadingContainer}>
               <ActivityIndicator size="large" color="#B24B3D" />
             </View>
-          ) : recipes.length > 0 ? (
-            recipes.map((recipe, index) => (
+          ) : allRecipes.length > 0 ? (
+            allRecipes.map((recipe, index) => (
               <AnimatedRecipeCard
                 key={index}
                 recipe={recipe}
