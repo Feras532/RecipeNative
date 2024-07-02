@@ -23,18 +23,20 @@ const db = getFirestore(app);
 const storeRecipes = async () => {
   const recipesCollection = collection(db, "recipes");
 
-  for (const recipe of recipes) {
-    try {
-      await addDoc(recipesCollection, recipe);
-      console.log(`Recipe '${recipe.title}' added successfully.`);
-    } catch (error) {
-      console.error(`Error adding recipe '${recipe.title}': `, error);
+  for (let i = 0; i < 100; i++) {
+    for (const recipe of recipes) {
+      try {
+        await addDoc(recipesCollection, recipe);
+        console.log(`Recipe '${recipe.title}' added successfully.`);
+      } catch (error) {
+        console.error(`Error adding recipe '${recipe.title}': `, error);
+      }
     }
   }
 };
 
 storeRecipes().then(() => {
-  console.log("All recipes have been added.");
+  console.log("All recipes have been added 1,000 times.");
 }).catch((error) => {
   console.error("Error adding recipes: ", error);
 });

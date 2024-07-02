@@ -15,8 +15,8 @@ const AnimatedRecipeCard: React.FC<AnimatedRecipeCardProps> = ({ recipe, onPress
   useEffect(() => {
     Animated.timing(animatedValue, {
       toValue: 1,
-      duration: 500,
-      delay: index * 100,
+      duration: 100,
+      delay: index * 50,
       useNativeDriver: true,
       easing: Easing.out(Easing.ease),
     }).start();
